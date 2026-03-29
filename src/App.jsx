@@ -35,6 +35,19 @@ function App() {
     setJobs((prevJobs) => [...prevJobs, newJob]);
   };
 
+  const deleteJob = async (id) => {
+    const response = await fetch(`http://localhost:3000/jobs/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const job = await response.json();
+
+    setJobs((prev) => prev.filter((job) => job.id !== id));
+  };
+
   if (loading) {
     return <p>Loading...</p>;
   }
@@ -54,7 +67,7 @@ function App() {
 
   return (
     <>
-      <JobsList jobs={jobs}></JobsList>
+      <JobsList jobs={jobs} onDelete={deleteJob}></JobsList>
       <JobForm onAddJobs={addJobs} />
     </>
   );

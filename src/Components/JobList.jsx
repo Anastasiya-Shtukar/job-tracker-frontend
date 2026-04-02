@@ -5,7 +5,7 @@ const Item = ({ children }) => {
   return <li className="li-job">{children}</li>;
 };
 
-const JobsList = ({ jobs, onDelete }) => {
+const JobsList = ({ jobs, onDelete, onStatusChange }) => {
   return (
     <ul className="ul-jobs">
       {jobs.map((job) => {
@@ -17,6 +17,7 @@ const JobsList = ({ jobs, onDelete }) => {
               title={job.title}
               id={job.id}
               onDelete={onDelete}
+              onStatusChange={onStatusChange}
             ></JobItem>
           </Item>
         );

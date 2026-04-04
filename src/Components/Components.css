@@ -1,46 +1,111 @@
-.ul-jobs {
-  margin: 10px;
-  border: 2px solid gray;
-  border-radius: 8px;
-  list-style-type: none;
-  box-shadow: 5px 5px 20px 5px grey;
-  background-color: rgb(245, 235, 235);
+.jobs-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 16px;
+}
+
+.job-card {
+  list-style: none;
+  padding: 20px;
+  border-radius: 14px;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
+}
+
+.job-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
 }
 
 .title {
   text-transform: uppercase;
-  text-shadow: 5px 5px 10px rgb(8, 8, 8);
-  text-decoration: underline;
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
 }
 
-.li-job {
-  padding: 20px;
-  border: none;
-  border-radius: 8px;
-  list-style-type: none;
-  margin: 20px;
-  background-color: rgb(202, 195, 194);
-  max-width: 500px;
-  box-shadow: 5px 5px 20px 1px black;
+.job-meta {
+  margin: 8px 0;
+  color: #374151;
+}
+
+.job-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-top: 16px;
+}
+
+.job-actions select {
+  min-width: 140px;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
 }
 
 .status-applied {
-  background-color: gray;
-  border-radius: 5px;
-  padding: 5px;
-  box-shadow: 1px 1px 10px 1px black;
+  background-color: #6b7280;
 }
 
 .status-interview {
-  background-color: rgb(89, 89, 237);
-  border-radius: 5px;
-  padding: 5px;
-  box-shadow: 1px 1px 10px 1px black;
+  background-color: #2563eb;
 }
 
 .status-rejected {
-  background-color: rgb(245, 4, 4);
-  border-radius: 5px;
-  padding: 5px;
-  box-shadow: 1px 1px 10px 1px black;
+  background-color: #dc2626;
+}
+
+select,
+input,
+button {
+  font: inherit;
+}
+
+select,
+input {
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  background-color: #fff;
+}
+
+button {
+  padding: 10px 14px;
+  border: none;
+  border-radius: 10px;
+  background-color: #111827;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+button:hover {
+  opacity: 0.92;
+}
+
+.form-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.form-row input {
+  flex: 1;
+  min-width: 220px;
+}
+
+.filter-select {
+  min-width: 180px;
 }

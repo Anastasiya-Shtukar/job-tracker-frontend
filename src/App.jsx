@@ -2,11 +2,13 @@ import { useState, useEffect } from "react";
 import JobsList from "./Components/JobList";
 import JobForm from "./Components/jobForm";
 import "./App.css";
+import StatusFilter from "./Components/StatusFilter";
 
 function App() {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedStatus, setSelectedStatus] = useState("all");
 
   useEffect(() => {
     const loadJobs = async () => {
@@ -62,6 +64,13 @@ function App() {
       prev.map((job) => (job.id === id ? { ...job, status: newStatus } : job)),
     );
   };
+  let filteredJobs = [];
+
+  if (selectedStatus === "all") {
+    filteredJobs = jobs;
+  } else {
+    filteredJobs = jobs.filter((job) => job.status === selectedStatus);
+  }
 
   if (loading) {
     return <p>Loading...</p>;
@@ -71,23 +80,34 @@ function App() {
     return <p>{error}</p>;
   }
 
-  if (jobs.length === 0) {
-    return (
-      <>
-        <p>No jobs yet</p>
-        <JobForm onAddJobs={addJobs} />
-      </>
-    );
-  }
-
   return (
     <>
-      <JobsList
-        jobs={jobs}
-        onDelete={deleteJob}
-        onStatusChange={statusChange}
-      ></JobsList>
-      <JobForm onAddJobs={addJobs} />
+      <div className="app">
+        <h1 className="app-title">AI Job Tracker</h1>
+        <div className="app-controls">
+          <StatusFilter
+            selectedStatus={selectedStatus}
+            onSelectedStatus={setSelectedStatus}
+          />
+        </div>
+
+        <div className="app-section">
+          {filteredJobs.length === 0 ? (
+            <p className="empty-state">
+              You haven’t added any jobs in this category
+            </p>
+          ) : (
+            <JobsList
+              jobs={filteredJobs}
+              onDelete={deleteJob}
+              onStatusChange={statusChange}
+            />
+          )}
+        </div>
+        <div className="app-section">
+          <JobForm onAddJobs={addJobs} />
+        </div>
+      </div>
     </>
   );
 }

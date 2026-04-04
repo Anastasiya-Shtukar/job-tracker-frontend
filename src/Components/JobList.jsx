@@ -2,12 +2,12 @@ import "./Components.css";
 import JobItem from "./JobItem";
 
 const Item = ({ children }) => {
-  return <li className="li-job">{children}</li>;
+  return <li className="job-card">{children}</li>;
 };
 
 const JobsList = ({ jobs, onDelete, onStatusChange }) => {
   return (
-    <ul className="ul-jobs">
+    <ul className="jobs-list">
       {jobs.map((job) => {
         return (
           <Item key={job.id}>

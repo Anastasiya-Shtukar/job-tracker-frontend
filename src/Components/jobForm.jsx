@@ -4,8 +4,8 @@ const JobForm = ({ onAddJobs }) => {
     const form = evt.target;
     const formData = new FormData(form);
 
-    const title = formData.get("title");
-    const company = formData.get("company");
+    let title = formData.get("title");
+    let company = formData.get("company");
 
     const newJob = {
       title,
@@ -28,11 +28,13 @@ const JobForm = ({ onAddJobs }) => {
     const createdJob = await response.json();
     onAddJobs(createdJob.job);
 
+    form.reset();
+
     console.log(createdJob);
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="form-row">
       <input type="text" name="title" />
       <input type="text" name="company" />
       <button type="submit">submit</button>

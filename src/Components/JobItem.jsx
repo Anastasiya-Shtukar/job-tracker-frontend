@@ -6,7 +6,15 @@ const statusClass = {
   rejected: "status-rejected",
 };
 
-const JobItem = ({ title, company, status, onDelete, id, onStatusChange }) => {
+const JobItem = ({
+  title,
+  company,
+  status,
+  onDelete,
+  id,
+  onStatusChange,
+  onUpdate,
+}) => {
   return (
     <div className="job-card">
       <div className="job-card-header">
@@ -33,6 +41,9 @@ const JobItem = ({ title, company, status, onDelete, id, onStatusChange }) => {
           <option value="interview">interview</option>
           <option value="rejected">rejected</option>
         </select>
+        <button className="delete-button" onClick={() => onUpdate(id)}>
+          Edit
+        </button>
       </div>
     </div>
   );

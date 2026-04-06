@@ -4,6 +4,7 @@ import JobForm from "./Components/jobForm";
 import "./App.css";
 import StatusFilter from "./Components/JobListControls";
 import JobListControls from "./Components/JobListControls";
+import EditModal from "./Components/EditModal";
 
 function App() {
   const [jobs, setJobs] = useState([]);
@@ -12,6 +13,7 @@ function App() {
   const [selectedStatus, setSelectedStatus] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOption, setSortOption] = useState("none");
+  const [editingJob, setEditingJob] = useState(null);
 
   useEffect(() => {
     const loadJobs = async () => {
@@ -68,6 +70,41 @@ function App() {
     );
   };
 
+  const onUpdate = (id) => {
+    const jobToEdit = jobs.find((job) => job.id === id);
+    setEditingJob(jobToEdit);
+  };
+
+  const handleSaveEdit = async (updateJob) => {
+    const id = updateJob.id;
+    const response = await fetch(`http://localhost:3000/jobs/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title: updateJob.title,
+        company: updateJob.company,
+      }),
+    });
+
+    const saveJob = await response.json();
+
+    setJobs((prev) =>
+      prev.map((job) =>
+        job.id === id
+          ? { ...job, title: saveJob.title, company: saveJob.company }
+          : job,
+      ),
+    );
+
+    setEditingJob(null);
+  };
+
+  const onClose = () => {
+    setEditingJob(null);
+  };
+
   const normalizedQuery = searchQuery.toUpperCase().trim();
 
   let filteredJobs = jobs
@@ -112,7 +149,6 @@ function App() {
             onSortOption={setSortOption}
           />
         </div>
-
         <div className="app-section">
           {filteredJobs.length === 0 ? (
             <p className="empty-state">
@@ -123,12 +159,20 @@ function App() {
               jobs={filteredJobs}
               onDelete={deleteJob}
               onStatusChange={statusChange}
+              onUpdate={onUpdate}
             />
           )}
         </div>
         <div className="app-section">
           <JobForm onAddJobs={addJobs} />
         </div>
+        {editingJob !== null && (
+          <EditModal
+            job={editingJob}
+            onSave={handleSaveEdit}
+            onClose={onClose}
+          />
+        )}
       </div>
     </>
   );

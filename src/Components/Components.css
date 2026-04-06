@@ -247,6 +247,191 @@
   min-width: 120px;
 }
 
+/* ===== Edit modal backdrop ===== */
+
+.background-modal {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 1000;
+}
+
+/* ===== Edit modal window ===== */
+
+.modal {
+  width: 100%;
+  max-width: 520px;
+  background-color: #ffffff;
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: 0 24px 80px rgba(15, 23, 42, 0.18);
+  position: relative;
+}
+
+/* ===== Form layout ===== */
+
+.modal form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.modal h3 {
+  margin: 0 0 8px;
+  font-size: 32px;
+  line-height: 1.2;
+  font-weight: 700;
+  color: #10224a;
+}
+
+.modal .form-label {
+  margin-bottom: -4px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #10224a;
+}
+
+.modal .form-input {
+  width: 100%;
+  min-height: 52px;
+  padding: 14px 16px;
+  border: 1px solid #cbd5e1;
+  border-radius: 14px;
+  font-size: 18px;
+  color: #0f172a;
+  background-color: #ffffff;
+  outline: none;
+  transition:
+    border-color 200ms ease,
+    box-shadow 200ms ease;
+}
+
+.modal .form-input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12);
+}
+
+/* ===== Close button ===== */
+
+.modal-close-btn {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #cbd5e1;
+  border-radius: 50%;
+  background-color: #f8fafc;
+  color: #10224a;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background-color 200ms ease,
+    border-color 200ms ease,
+    transform 200ms ease;
+}
+
+.modal-close-btn:hover {
+  background-color: #e2e8f0;
+  border-color: #94a3b8;
+}
+
+.modal-close-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12);
+}
+
+/* ===== Actions ===== */
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.modal-cancel-btn,
+.modal-save-btn {
+  min-width: 120px;
+  min-height: 48px;
+  padding: 12px 20px;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 200ms ease,
+    border-color 200ms ease,
+    color 200ms ease,
+    transform 200ms ease,
+    box-shadow 200ms ease;
+}
+
+.modal-cancel-btn {
+  border: 1px solid #cbd5e1;
+  background-color: #ffffff;
+  color: #10224a;
+}
+
+.modal-cancel-btn:hover {
+  background-color: #f8fafc;
+  border-color: #94a3b8;
+}
+
+.modal-save-btn {
+  border: none;
+  background-color: #0f1b46;
+  color: #ffffff;
+}
+
+.modal-save-btn:hover {
+  background-color: #16265d;
+}
+
+.modal-cancel-btn:hover,
+.modal-save-btn:hover,
+.modal-close-btn:hover {
+  transform: translateY(-1px);
+}
+
+.modal-cancel-btn:focus,
+.modal-save-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12);
+}
+
+/* ===== Mobile ===== */
+
+@media (max-width: 600px) {
+  .background-modal {
+    padding: 16px;
+  }
+
+  .modal {
+    padding: 22px 18px;
+    border-radius: 16px;
+  }
+
+  .modal h3 {
+    font-size: 26px;
+    padding-right: 44px;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+  }
+
+  .modal-cancel-btn,
+  .modal-save-btn {
+    width: 100%;
+  }
+}
+
 /* ===== Responsive ===== */
 
 @media (max-width: 900px) {

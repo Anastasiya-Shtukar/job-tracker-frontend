@@ -8,23 +8,30 @@ const statusClass = {
 
 const JobItem = ({ title, company, status, onDelete, id, onStatusChange }) => {
   return (
-    <div>
-      <div className="job-header">
-        <h3 className="title">{title}</h3>
+    <div className="job-card">
+      <div className="job-card-header">
+        <div>
+          <h3 className="job-title">{title}</h3>
+          <p className="job-company">Company: {company}</p>
+        </div>
+
         <span className={`status-badge ${statusClass[status]}`}>{status}</span>
       </div>
 
-      <p className="job-meta">company: {company}</p>
       <div className="job-actions">
-        <button onClick={() => onDelete(id)}>Delete</button>
+        <button className="delete-button" onClick={() => onDelete(id)}>
+          Delete
+        </button>
+
         <select
+          className="job-status-select"
           name="status"
           value={status}
           onChange={(e) => onStatusChange(id, e.target.value)}
         >
-          <option value={"applied"}>applied</option>
-          <option value={"interview"}>interview</option>
-          <option value={"rejected"}>rejected</option>
+          <option value="applied">applied</option>
+          <option value="interview">interview</option>
+          <option value="rejected">rejected</option>
         </select>
       </div>
     </div>

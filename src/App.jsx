@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import JobsList from "./Components/JobList";
 import JobForm from "./Components/jobForm";
 import "./App.css";
-import StatusFilter from "./Components/StatusFilter";
+import StatusFilter from "./Components/JobListControls";
+import JobListControls from "./Components/JobListControls";
 
 function App() {
   const [jobs, setJobs] = useState([]);
@@ -10,6 +11,7 @@ function App() {
   const [error, setError] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
+  const [sortOption, setSortOption] = useState("none");
 
   useEffect(() => {
     const loadJobs = async () => {
@@ -77,7 +79,16 @@ function App() {
         ? true
         : job.title.toUpperCase().includes(normalizedQuery) ||
           job.company.toUpperCase().includes(normalizedQuery),
-    );
+    )
+    .toSorted((a, b) => {
+      if (sortOption === "none") {
+        return 0;
+      } else if (sortOption === "company-asc") {
+        return a.company.localeCompare(b.company);
+      } else {
+        return b.company.localeCompare(a.company);
+      }
+    });
 
   if (loading) {
     return <p>Loading...</p>;
@@ -92,15 +103,13 @@ function App() {
       <div className="app">
         <h1 className="app-title">AI Job Tracker</h1>
         <div className="app-controls">
-          <StatusFilter
+          <JobListControls
             selectedStatus={selectedStatus}
             onSelectedStatus={setSelectedStatus}
-          />
-          <input
-            value={searchQuery}
-            name="search"
-            type="text"
-            onChange={(e) => setSearchQuery(e.target.value)}
+            searchQuery={searchQuery}
+            onSearchQuery={setSearchQuery}
+            sortOption={sortOption}
+            onSortOption={setSortOption}
           />
         </div>
 

@@ -9,6 +9,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState("all");
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const loadJobs = async () => {
@@ -64,13 +65,19 @@ function App() {
       prev.map((job) => (job.id === id ? { ...job, status: newStatus } : job)),
     );
   };
-  let filteredJobs = [];
 
-  if (selectedStatus === "all") {
-    filteredJobs = jobs;
-  } else {
-    filteredJobs = jobs.filter((job) => job.status === selectedStatus);
-  }
+  const normalizedQuery = searchQuery.toUpperCase().trim();
+
+  let filteredJobs = jobs
+    .filter((job) =>
+      selectedStatus === "all" ? true : job.status === selectedStatus,
+    )
+    .filter((job) =>
+      searchQuery === ""
+        ? true
+        : job.title.toUpperCase().includes(normalizedQuery) ||
+          job.company.toUpperCase().includes(normalizedQuery),
+    );
 
   if (loading) {
     return <p>Loading...</p>;
@@ -88,6 +95,12 @@ function App() {
           <StatusFilter
             selectedStatus={selectedStatus}
             onSelectedStatus={setSelectedStatus}
+          />
+          <input
+            value={searchQuery}
+            name="search"
+            type="text"
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
 

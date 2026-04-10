@@ -14,6 +14,8 @@ const JobItem = ({
   id,
   onStatusChange,
   onUpdate,
+  deletingJobId,
+  updatingJobId,
 }) => {
   return (
     <div className="job-card">
@@ -27,21 +29,30 @@ const JobItem = ({
       </div>
 
       <div className="job-actions">
-        <button className="delete-button" onClick={() => onDelete(id)}>
-          Delete
+        <button
+          className="delete-button"
+          onClick={() => onDelete(id)}
+          disabled={deletingJobId === id}
+        >
+          {deletingJobId === id ? "Deleting..." : "Delete"}
         </button>
 
         <select
           className="job-status-select"
           name="status"
-          value={status}
+          value={updatingJobId === id ? "updating..." : status}
           onChange={(e) => onStatusChange(id, e.target.value)}
+          disabled={updatingJobId === id}
         >
           <option value="applied">applied</option>
           <option value="interview">interview</option>
           <option value="rejected">rejected</option>
         </select>
-        <button className="delete-button" onClick={() => onUpdate(id)}>
+        <button
+          className="delete-button"
+          onClick={() => onUpdate(id)}
+          disabled={updatingJobId === id || deletingJobId === id}
+        >
           Edit
         </button>
       </div>

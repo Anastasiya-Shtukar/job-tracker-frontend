@@ -3,20 +3,34 @@ import { useState } from "react";
 const EditModal = ({ job, onSave, onClose }) => {
   const [title, setTitle] = useState(job.title);
   const [company, setCompany] = useState(job.company);
+  const [error, setError] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (evt) => {
+  const handleSubmit = async (evt) => {
     evt.preventDefault();
 
-    if (!title || !company) {
+    const normalizedTitle = title.trim();
+    const normalizedCompany = company.trim();
+
+    if (!normalizedTitle || !normalizedCompany) {
+      setError("All fields are required");
       return;
     }
     const updateJob = {
       ...job,
-      title,
-      company,
+      title: normalizedTitle,
+      company: normalizedCompany,
     };
 
-    onSave(updateJob);
+    try {
+      setError(null);
+      setIsSubmitting(true);
+      await onSave(updateJob);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -43,7 +57,10 @@ const EditModal = ({ job, onSave, onClose }) => {
             type="text"
             name="title"
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={(e) => {
+              setTitle(e.target.value);
+              setError(null);
+            }}
           />
 
           <label className="form-label" htmlFor="edit-company">
@@ -55,8 +72,13 @@ const EditModal = ({ job, onSave, onClose }) => {
             type="text"
             name="company"
             value={company}
-            onChange={(e) => setCompany(e.target.value)}
+            onChange={(e) => {
+              setCompany(e.target.value);
+              setError(null);
+            }}
           />
+
+          {error && <div className="form-error">{error}</div>}
 
           <div className="modal-actions">
             <button
@@ -67,7 +89,11 @@ const EditModal = ({ job, onSave, onClose }) => {
               Cancel
             </button>
 
-            <button type="submit" className="modal-save-btn">
+            <button
+              disabled={isSubmitting}
+              type="submit"
+              className="modal-save-btn"
+            >
               Save
             </button>
           </div>

@@ -1,7 +1,14 @@
 import "./Components.css";
 import JobItem from "./JobItem";
 
-function JobsList({ jobs, onDelete, onStatusChange, onUpdate }) {
+function JobsList({
+  jobs,
+  onDelete,
+  onStatusChange,
+  onUpdate,
+  deletingJobId,
+  updatingJobId,
+}) {
   return (
     <ul className="jobs-list">
       {jobs.map((job) => (
@@ -11,6 +18,8 @@ function JobsList({ jobs, onDelete, onStatusChange, onUpdate }) {
             onDelete={onDelete}
             onStatusChange={onStatusChange}
             onUpdate={onUpdate}
+            deletingJobId={deletingJobId}
+            updatingJobId={updatingJobId}
           />
         </li>
       ))}

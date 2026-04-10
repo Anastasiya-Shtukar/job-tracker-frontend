@@ -1,36 +1,53 @@
+import { useState } from "react";
+
 const JobForm = ({ onAddJobs }) => {
+  const [error, setError] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const handleSubmit = async (evt) => {
     evt.preventDefault();
-    const form = evt.target;
-    const formData = new FormData(form);
+    try {
+      setIsSubmitting(true);
+      setError(null);
 
-    let title = formData.get("title");
-    let company = formData.get("company");
+      const form = evt.target;
+      const formData = new FormData(form);
 
-    const newJob = {
-      title,
-      company,
-      status: "applied",
-    };
+      let title = formData.get("title").trim();
+      let company = formData.get("company").trim();
 
-    if (!title || !company) {
-      return;
+      const newJob = {
+        title,
+        company,
+        status: "applied",
+      };
+
+      if (!title || !company) {
+        setError("All fields are required");
+        return;
+      }
+
+      const response = await fetch("http://localhost:3000/jobs", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newJob),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to add vacancy");
+      }
+
+      onAddJobs(data.job);
+      form.reset();
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setIsSubmitting(false);
     }
-
-    const response = await fetch("http://localhost:3000/jobs", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(newJob),
-    });
-
-    const createdJob = await response.json();
-    onAddJobs(createdJob.job);
-
-    form.reset();
-
-    console.log(createdJob);
   };
 
   return (
@@ -42,7 +59,13 @@ const JobForm = ({ onAddJobs }) => {
           <label className="form-label" htmlFor="title">
             Name
           </label>
-          <input className="form-input" id="title" type="text" name="title" />
+          <input
+            className="form-input"
+            id="title"
+            type="text"
+            name="title"
+            onChange={() => setError(null)}
+          />
         </div>
 
         <div className="form-group">
@@ -54,13 +77,19 @@ const JobForm = ({ onAddJobs }) => {
             id="company"
             type="text"
             name="company"
+            onChange={() => setError(null)}
           />
         </div>
 
-        <button className="primary-button form-submit" type="submit">
+        <button
+          disabled={isSubmitting}
+          className="primary-button form-submit"
+          type="submit"
+        >
           Submit
         </button>
       </form>
+      {error && <div className="form-error">{error}</div>}
     </div>
   );
 };

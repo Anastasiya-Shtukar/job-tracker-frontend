@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import JobsList from "./Components/JobList";
 import JobForm from "./Components/jobForm";
 import "./App.css";
-import StatusFilter from "./Components/JobListControls";
+import { fetchJobs, createJob, deleteJob, updateJob } from "./Api";
 import JobListControls from "./Components/JobListControls";
 import EditModal from "./Components/EditModal";
 
@@ -23,13 +23,8 @@ function App() {
         setLoading(true);
         setError(null);
 
-        const response = await fetch("http://localhost:3000/jobs");
+        const data = await fetchJobs();
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch jobs");
-        }
-
-        const data = await response.json();
         setJobs(data);
       } catch (err) {
         setError(err.message);
@@ -40,26 +35,18 @@ function App() {
     loadJobs();
   }, []);
 
-  const addJobs = (newJob) => {
-    setJobs((prevJobs) => [...prevJobs, newJob]);
+  const addJob = async (newJob) => {
+    const data = await createJob(newJob);
+
+    setJobs((prevJobs) => [...prevJobs, data]);
   };
 
-  const deleteJob = async (id) => {
+  const handleDeleteJob = async (id) => {
     try {
       setError(null);
       setDeletingJobId(id);
-      const response = await fetch(`http://localhost:3000/jobs/${id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || "Failed to delete jobs");
-      }
+      await deleteJob(id);
 
       setJobs((prev) => prev.filter((job) => job.id !== id));
     } catch (error) {
@@ -73,23 +60,12 @@ function App() {
     try {
       setUpdatingJobId(id);
       setError(null);
-      const response = await fetch(`http://localhost:3000/jobs/${id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ status: newStatus }),
-      });
 
-      const updateStatus = await response.json();
-
-      if (!response.ok) {
-        throw new Error(updateStatus.error || "Failed to change status");
-      }
+      const data = await updateJob(id, { status: newStatus });
 
       setJobs((prev) =>
         prev.map((job) =>
-          job.id === id ? { ...job, status: updateStatus.status } : job,
+          job.id === id ? { ...job, status: data.status } : job,
         ),
       );
     } catch (error) {
@@ -104,25 +80,14 @@ function App() {
     setEditingJob(jobToEdit);
   };
 
-  const handleSaveEdit = async (updateJob) => {
+  const handleSaveEdit = async (updatedJob) => {
     setError(null);
-    const id = updateJob.id;
-    const response = await fetch(`http://localhost:3000/jobs/${id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        title: updateJob.title,
-        company: updateJob.company,
-      }),
+    const id = updatedJob.id;
+
+    const data = await updateJob(id, {
+      title: updatedJob.title,
+      company: updatedJob.company,
     });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.error || "Failed to save changes");
-    }
 
     setJobs((prev) =>
       prev.map((job) =>
@@ -188,7 +153,7 @@ function App() {
           ) : (
             <JobsList
               jobs={filteredJobs}
-              onDelete={deleteJob}
+              onDelete={handleDeleteJob}
               onStatusChange={statusChange}
               onUpdate={onUpdate}
               deletingJobId={deletingJobId}
@@ -197,7 +162,7 @@ function App() {
           )}
         </div>
         <div className="app-section">
-          <JobForm onAddJobs={addJobs} />
+          <JobForm onAddJob={addJob} />
         </div>
         {editingJob !== null && (
           <EditModal

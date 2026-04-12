@@ -34,13 +34,22 @@ const EditModal = ({ job, onSave, onClose }) => {
   };
 
   return (
-    <div className="background-modal" onClick={onClose}>
+    <div
+      className="background-modal"
+      onClick={() => {
+        if (isSubmitting) {
+          return;
+        }
+        onClose();
+      }}
+    >
       <div className="modal" onClick={(e) => e.stopPropagation()}>
         <button
           type="button"
           className="modal-close-btn"
           onClick={onClose}
           aria-label="Close edit modal"
+          disabled={isSubmitting}
         >
           ×
         </button>
@@ -57,6 +66,7 @@ const EditModal = ({ job, onSave, onClose }) => {
             type="text"
             name="title"
             value={title}
+            disabled={isSubmitting}
             onChange={(e) => {
               setTitle(e.target.value);
               setError(null);
@@ -72,6 +82,7 @@ const EditModal = ({ job, onSave, onClose }) => {
             type="text"
             name="company"
             value={company}
+            disabled={isSubmitting}
             onChange={(e) => {
               setCompany(e.target.value);
               setError(null);
@@ -85,6 +96,7 @@ const EditModal = ({ job, onSave, onClose }) => {
               type="button"
               className="modal-cancel-btn"
               onClick={onClose}
+              disabled={isSubmitting}
             >
               Cancel
             </button>
@@ -94,7 +106,7 @@ const EditModal = ({ job, onSave, onClose }) => {
               type="submit"
               className="modal-save-btn"
             >
-              Save
+              {isSubmitting ? "Saving..." : "Save"}
             </button>
           </div>
         </form>

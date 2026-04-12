@@ -106,25 +106,26 @@ function App() {
 
   const normalizedQuery = searchQuery.toUpperCase().trim();
 
-  let filteredJobs = jobs
-    .filter((job) =>
-      selectedStatus === "all" ? true : job.status === selectedStatus,
-    )
-    .filter((job) =>
-      searchQuery === ""
-        ? true
-        : job.title.toUpperCase().includes(normalizedQuery) ||
-          job.company.toUpperCase().includes(normalizedQuery),
-    )
-    .toSorted((a, b) => {
-      if (sortOption === "none") {
-        return 0;
-      } else if (sortOption === "company-asc") {
-        return a.company.localeCompare(b.company);
-      } else {
-        return b.company.localeCompare(a.company);
-      }
-    });
+  let statusFilter = jobs.filter((job) =>
+    selectedStatus === "all" ? true : job.status === selectedStatus,
+  );
+
+  let searchQueryFilter = statusFilter.filter((job) =>
+    normalizedQuery === ""
+      ? true
+      : job.title.toUpperCase().includes(normalizedQuery) ||
+        job.company.toUpperCase().includes(normalizedQuery),
+  );
+
+  let sortedJobs = searchQueryFilter.toSorted((a, b) => {
+    if (sortOption === "none") {
+      return 0;
+    } else if (sortOption === "company-asc") {
+      return a.company.localeCompare(b.company);
+    } else {
+      return b.company.localeCompare(a.company);
+    }
+  });
 
   if (loading) {
     return <div className="loading">Loading...</div>;
@@ -146,13 +147,17 @@ function App() {
           />
         </div>
         <div className="app-section">
-          {filteredJobs.length === 0 ? (
+          {jobs.length === 0 ? (
+            <p className="empty-state">You don't have any vacancies yet</p>
+          ) : statusFilter.length === 0 ? (
             <p className="empty-state">
-              You haven’t added any jobs in this category
+              You don't have any vacancies with this status
             </p>
+          ) : normalizedQuery !== "" && searchQueryFilter.length === 0 ? (
+            <p className="empty-state">Nothing was found for your request</p>
           ) : (
             <JobsList
-              jobs={filteredJobs}
+              jobs={sortedJobs}
               onDelete={handleDeleteJob}
               onStatusChange={statusChange}
               onUpdate={onUpdate}

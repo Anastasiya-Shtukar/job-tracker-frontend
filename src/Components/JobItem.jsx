@@ -40,7 +40,7 @@ const JobItem = ({
         <select
           className="job-status-select"
           name="status"
-          value={updatingJobId === id ? "updating..." : status}
+          value={status}
           onChange={(e) => onStatusChange(id, e.target.value)}
           disabled={updatingJobId === id}
         >

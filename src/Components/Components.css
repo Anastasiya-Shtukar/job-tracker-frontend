@@ -140,6 +140,15 @@
   color: #334155;
 }
 
+.job-details {
+  margin-top: 6px;
+  font-size: 14px;
+  color: #6b7280;
+  line-height: 1.5;
+  max-width: 500px;
+  word-break: break-word;
+}
+
 .status-badge {
   flex-shrink: 0;
   padding: 8px 14px;

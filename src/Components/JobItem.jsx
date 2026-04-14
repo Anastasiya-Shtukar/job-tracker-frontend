@@ -10,6 +10,7 @@ const JobItem = ({
   title,
   company,
   status,
+  details,
   onDelete,
   id,
   onStatusChange,
@@ -23,6 +24,7 @@ const JobItem = ({
         <div>
           <h3 className="job-title">{title}</h3>
           <p className="job-company">Company: {company}</p>
+          {details !== "" && <p className="job-details">Details: {details}</p>}
         </div>
 
         <span className={`status-badge ${statusClass[status]}`}>{status}</span>

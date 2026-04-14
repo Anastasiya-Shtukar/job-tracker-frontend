@@ -12,6 +12,7 @@ const JobForm = ({ onAddJob }) => {
 
     const title = formData.get("title").trim();
     const company = formData.get("company").trim();
+    const details = formData.get("details").trim();
 
     if (!title || !company) {
       setError("All fields are required");
@@ -21,6 +22,7 @@ const JobForm = ({ onAddJob }) => {
     const newJob = {
       title,
       company,
+      details,
       status: "applied",
     };
 
@@ -63,6 +65,19 @@ const JobForm = ({ onAddJob }) => {
             id="company"
             type="text"
             name="company"
+            onChange={() => setError(null)}
+          />
+        </div>
+
+        <div className="form-group">
+          <label className="form-label" htmlFor="details">
+            Details
+          </label>
+          <input
+            className="form-input"
+            id="details"
+            type="text"
+            name="details"
             onChange={() => setError(null)}
           />
         </div>

@@ -3,6 +3,7 @@ import { useState } from "react";
 const EditModal = ({ job, onSave, onClose }) => {
   const [title, setTitle] = useState(job.title);
   const [company, setCompany] = useState(job.company);
+  const [details, setDetails] = useState(job.details);
   const [error, setError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -11,6 +12,7 @@ const EditModal = ({ job, onSave, onClose }) => {
 
     const normalizedTitle = title.trim();
     const normalizedCompany = company.trim();
+    const normalizedDetails = details.trim();
 
     if (!normalizedTitle || !normalizedCompany) {
       setError("All fields are required");
@@ -20,6 +22,7 @@ const EditModal = ({ job, onSave, onClose }) => {
       ...job,
       title: normalizedTitle,
       company: normalizedCompany,
+      details: normalizedDetails,
     };
 
     try {
@@ -85,6 +88,22 @@ const EditModal = ({ job, onSave, onClose }) => {
             disabled={isSubmitting}
             onChange={(e) => {
               setCompany(e.target.value);
+              setError(null);
+            }}
+          />
+
+          <label className="form-label" htmlFor="edit-details">
+            Details
+          </label>
+          <input
+            className="form-input"
+            id="edit-details"
+            type="text"
+            name="details"
+            value={details}
+            disabled={isSubmitting}
+            onChange={(e) => {
+              setDetails(e.target.value);
               setError(null);
             }}
           />

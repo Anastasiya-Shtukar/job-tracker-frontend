@@ -87,12 +87,18 @@ function App() {
     const data = await updateJob(id, {
       title: updatedJob.title,
       company: updatedJob.company,
+      details: updatedJob.details,
     });
 
     setJobs((prev) =>
       prev.map((job) =>
         job.id === id
-          ? { ...job, title: data.title, company: data.company }
+          ? {
+              ...job,
+              title: data.title,
+              company: data.company,
+              details: data.details,
+            }
           : job,
       ),
     );

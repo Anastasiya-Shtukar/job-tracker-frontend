@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { generateSuggestion } from "../Api";
 
 const JobForm = ({ onAddJob }) => {
   const [error, setError] = useState(null);
@@ -21,11 +22,9 @@ const JobForm = ({ onAddJob }) => {
       setAiError(null);
       setSuggestedDetails(null);
 
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const data = await generateSuggestion(details);
 
-      const mockSuggestion = `Short summary: ${normalizedDetails}`;
-
-      setSuggestedDetails(mockSuggestion);
+      setSuggestedDetails(data);
     } catch (error) {
       setAiError(error.message);
     } finally {

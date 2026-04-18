@@ -62,4 +62,22 @@ const createJob = async (newJob) => {
   return data.job;
 };
 
-export { fetchJobs, createJob, deleteJob, updateJob };
+const generateSuggestion = async (details) => {
+  const response = await fetch("http://localhost:3000/ai/suggest-details", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ details }),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.error || "Failed to generate response");
+  }
+
+  return data.suggestion;
+};
+
+export { fetchJobs, createJob, deleteJob, updateJob, generateSuggestion };

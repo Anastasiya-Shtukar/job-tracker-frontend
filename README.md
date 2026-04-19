@@ -1,16 +1,50 @@
-# React + Vite
+# AI Job Tracker
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A job tracking application with AI-assisted job details generation.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Add / edit / delete jobs
+- Track application status (applied / interview / rejected)
+- Filter, search and sort jobs
+- AI-powered job details suggestion
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React (Vite)
+- Node.js (Express)
+- OpenAI API
 
-## Expanding the ESLint configuration
+## AI Feature
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Users can generate structured job details from raw input.
+
+Flow:
+
+details input  
+→ frontend request  
+→ backend validation  
+→ OpenAI API  
+→ suggestion returned  
+→ user can accept or edit
+
+## Architecture
+
+- frontend → Api.js → backend
+- backend → OpenAI API (proxy)
+
+## Project Structure
+
+src/
+Components/
+Api.js
+App.jsx
+
+## Setup
+
+### Frontend
+
+```bash
+npm install
+npm run dev
+```

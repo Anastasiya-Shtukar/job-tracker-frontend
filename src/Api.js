@@ -1,7 +1,7 @@
-const API = "http://localhost:3000/jobs";
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 const fetchJobs = async () => {
-  const response = await fetch(API);
+  const response = await fetch(`${BASE_URL}/jobs`);
 
   const data = await response.json();
 
@@ -13,7 +13,7 @@ const fetchJobs = async () => {
 };
 
 const deleteJob = async (id) => {
-  const response = await fetch(`${API}/${id}`, {
+  const response = await fetch(`${BASE_URL}/jobs/${id}`, {
     method: "DELETE",
   });
 
@@ -27,7 +27,7 @@ const deleteJob = async (id) => {
 };
 
 const updateJob = async (id, updates) => {
-  const response = await fetch(`${API}/${id}`, {
+  const response = await fetch(`${BASE_URL}/jobs/${id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -45,7 +45,7 @@ const updateJob = async (id, updates) => {
 };
 
 const createJob = async (newJob) => {
-  const response = await fetch(API, {
+  const response = await fetch(`${BASE_URL}/jobs`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -63,7 +63,7 @@ const createJob = async (newJob) => {
 };
 
 const generateSuggestion = async (details) => {
-  const response = await fetch("http://localhost:3000/ai/suggest-details", {
+  const response = await fetch(`${BASE_URL}/ai/suggest-details`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

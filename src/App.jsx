@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import JobsList from "./Components/JobList";
-import JobForm from "./Components/JobForm";
+import JobForm from "./Components/team.jsx";
 import "./App.css";
 import { fetchJobs, createJob, deleteJob, updateJob } from "./Api";
 import JobListControls from "./Components/JobListControls";

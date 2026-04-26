@@ -12,10 +12,11 @@ function App() {
   const [error, setError] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
-  const [sortOption, setSortOption] = useState("none");
+  const [sortOption, setSortOption] = useState("created-desc");
   const [editingJob, setEditingJob] = useState(null);
   const [deletingJobId, setDeletingJobId] = useState(null);
   const [updatingJobId, setUpdatingJobId] = useState(null);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   useEffect(() => {
     const loadJobs = async () => {
@@ -126,11 +127,25 @@ function App() {
   let sortedJobs = searchQueryFilter.toSorted((a, b) => {
     if (sortOption === "none") {
       return 0;
-    } else if (sortOption === "company-asc") {
+    }
+
+    if (sortOption === "company-asc") {
       return a.company.localeCompare(b.company);
-    } else {
+    }
+
+    if (sortOption === "company-desc") {
       return b.company.localeCompare(a.company);
     }
+
+    if (sortOption === "created-desc") {
+      return new Date(b.created_at) - new Date(a.created_at);
+    }
+
+    if (sortOption === "created-asc") {
+      return new Date(a.created_at) - new Date(b.created_at);
+    }
+
+    return 0;
   });
 
   if (loading) {
@@ -141,6 +156,7 @@ function App() {
     <>
       <div className="app">
         <h1 className="app-title">AI Job Tracker</h1>
+
         {error && <div className="error-banner">{error}</div>}
         <div className="app-controls">
           <JobListControls
@@ -151,6 +167,13 @@ function App() {
             sortOption={sortOption}
             onSortOption={setSortOption}
           />
+          <button
+            className="primary-button"
+            type="button"
+            onClick={() => setIsAddModalOpen(true)}
+          >
+            Add vacancy
+          </button>
         </div>
         <div className="app-section">
           {jobs.length === 0 ? (
@@ -172,15 +195,39 @@ function App() {
             />
           )}
         </div>
-        <div className="app-section">
-          <JobForm onAddJob={addJob} />
-        </div>
         {editingJob !== null && (
           <EditModal
             job={editingJob}
             onSave={handleSaveEdit}
             onClose={onClose}
           />
+        )}
+
+        {isAddModalOpen && (
+          <div
+            className="background-modal"
+            onClick={() => setIsAddModalOpen(false)}
+          >
+            <div
+              className="modal add-job-modal"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                type="button"
+                className="modal-close-btn"
+                onClick={() => setIsAddModalOpen(false)}
+              >
+                ×
+              </button>
+
+              <JobForm
+                onAddJob={async (newJob) => {
+                  await addJob(newJob);
+                  setIsAddModalOpen(false);
+                }}
+              />
+            </div>
+          </div>
         )}
       </div>
     </>

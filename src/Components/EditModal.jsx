@@ -46,7 +46,7 @@ const EditModal = ({ job, onSave, onClose }) => {
         onClose();
       }}
     >
-      <div className="modal" onClick={(e) => e.stopPropagation()}>
+      <div className="modal edit-modal" onClick={(e) => e.stopPropagation()}>
         <button
           type="button"
           className="modal-close-btn"

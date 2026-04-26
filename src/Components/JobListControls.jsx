@@ -54,6 +54,8 @@ const JobListControls = ({
           onChange={(e) => onSortOption(e.target.value)}
         >
           <option value="none">None</option>
+          <option value="created-desc">Newest first</option>
+          <option value="created-asc">Oldest first</option>
           <option value="company-asc">Company (A-Z)</option>
           <option value="company-desc">Company (Z-A)</option>
         </select>

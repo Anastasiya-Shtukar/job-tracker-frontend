@@ -14,7 +14,8 @@
 
 .app-controls {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-evenly;
+  align-items: flex-end;
   margin-bottom: 20px;
   gap: 12px;
 }

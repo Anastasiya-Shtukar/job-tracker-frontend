@@ -1,13 +1,68 @@
 import { useState } from "react";
-import { generateSuggestion } from "../Api";
+import { extractJobData, generateSuggestion } from "../Api";
 
 const JobForm = ({ onAddJob }) => {
   const [error, setError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [suggestedDetails, setSuggestedDetails] = useState(null);
+  const [jobPostingText, setJobPostingText] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [aiError, setAiError] = useState(null);
+  const [title, setTitle] = useState("");
+  const [company, setCompany] = useState("");
+  const [jobUrl, setJobUrl] = useState("");
   const [details, setDetails] = useState("");
+
+  const handleExtractJobData = async () => {
+    const normalizedJobPostingText = jobPostingText.trim();
+
+    if (!normalizedJobPostingText) {
+      setAiError("Add descriptions first");
+      return;
+    }
+
+    try {
+      setIsGenerating(true);
+      setAiError(null);
+      setSuggestedDetails(null);
+
+      const extractedJob = await extractJobData(normalizedJobPostingText);
+
+      if (extractedJob.title) {
+        setTitle(extractedJob.title);
+      }
+
+      if (extractedJob.company) {
+        setCompany(extractedJob.company);
+      }
+
+      if (extractedJob.details) {
+        setDetails(extractedJob.details);
+      }
+
+      if (
+        !extractedJob.title &&
+        !extractedJob.company &&
+        !extractedJob.details
+      ) {
+        return setAiError(`Couldn't extract job data. Try editing manually.`);
+      }
+
+      if (
+        !extractedJob.title ||
+        !extractedJob.company ||
+        !extractedJob.details
+      ) {
+        return setAiError(
+          `Some fields were filled automatically. Please review.`,
+        );
+      }
+    } catch (error) {
+      setAiError(error.message);
+    } finally {
+      setIsGenerating(false);
+    }
+  };
 
   const handleGenerateSuggestion = async () => {
     const normalizedDetails = details.trim();
@@ -35,37 +90,39 @@ const JobForm = ({ onAddJob }) => {
   const handleSubmit = async (evt) => {
     evt.preventDefault();
 
-    const form = evt.target;
-    const formData = new FormData(form);
-
-    const title = formData.get("title").trim();
-    const company = formData.get("company").trim();
+    const normalizedTitle = title.trim();
+    const normalizedCompany = company.trim();
     const normalizedDetails = details.trim();
+    const normalizedJobUrl = jobUrl.trim();
 
-    if (!title || !company) {
-      setError("All fields are required");
+    if (!normalizedTitle || !normalizedCompany || !normalizedJobUrl) {
+      setError("Title, company and job URL are required");
       return;
     }
 
     const newJob = {
-      title,
-      company,
+      title: normalizedTitle,
+      company: normalizedCompany,
       details: normalizedDetails,
       status: "applied",
+      job_url: normalizedJobUrl,
     };
 
     try {
       setIsSubmitting(true);
       await onAddJob(newJob);
-      form.reset();
-      form.elements.title.focus();
+
+      setTitle("");
+      setCompany("");
+      setJobUrl("");
+      setDetails("");
+      setJobPostingText("");
+      setSuggestedDetails(null);
+      setAiError(null);
     } catch (error) {
       setError(error.message);
     } finally {
       setIsSubmitting(false);
-      setSuggestedDetails(null);
-      setDetails("");
-      setAiError(null);
     }
   };
 
@@ -74,17 +131,53 @@ const JobForm = ({ onAddJob }) => {
       <p className="job-form-title">Add a new vacancy</p>
 
       <form onSubmit={handleSubmit} className="form">
+        <div className="ai-extract-box">
+          <div className="ai-extract-header">
+            <p className="ai-extract-title">Extract job details with AI</p>
+            <p className="ai-extract-description">
+              Paste the full job posting and AI will fill position title,
+              company and notes.
+            </p>
+          </div>
+
+          <textarea
+            id="job-posting-text"
+            className="ai-textarea"
+            value={jobPostingText}
+            onChange={(e) => {
+              setJobPostingText(e.target.value);
+              setAiError(null);
+            }}
+            placeholder="Paste full job posting here..."
+          />
+
+          <div className="ai-extract-actions">
+            <button
+              disabled={isGenerating}
+              className="primary-button ai-generate-button"
+              type="button"
+              onClick={handleExtractJobData}
+            >
+              {isGenerating ? "Extracting..." : "Extract with AI"}
+            </button>
+          </div>
+        </div>
+
         <div className="form-top-row">
           <div>
             <label className="form-label" htmlFor="title">
-              Name
+              Position title
             </label>
             <input
               className="form-input"
               id="title"
+              value={title}
               type="text"
               name="title"
-              onChange={() => setError(null)}
+              onChange={(e) => {
+                setTitle(e.target.value);
+                setError(null);
+              }}
             />
           </div>
 
@@ -95,18 +188,38 @@ const JobForm = ({ onAddJob }) => {
             <input
               className="form-input"
               id="company"
+              value={company}
               type="text"
               name="company"
-              onChange={() => setError(null)}
+              onChange={(e) => {
+                setCompany(e.target.value);
+                setError(null);
+              }}
+            />
+          </div>
+          <div>
+            <label className="form-label" htmlFor="job_url">
+              Job URL
+            </label>
+            <input
+              className="form-input"
+              id="job_url"
+              value={jobUrl}
+              type="text"
+              name="job_url"
+              onChange={(e) => {
+                setJobUrl(e.target.value);
+                setError(null);
+              }}
             />
           </div>
         </div>
         <div>
           <div className="form-details-row">
             <label className="form-label" htmlFor="details">
-              Details
+              Short notes
             </label>
-            <input
+            <textarea
               className="form-input"
               id="details"
               type="text"

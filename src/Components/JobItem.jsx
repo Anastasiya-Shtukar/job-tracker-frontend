@@ -10,6 +10,7 @@ const JobItem = ({
   title,
   company,
   status,
+  job_url,
   details,
   onDelete,
   id,
@@ -24,6 +25,14 @@ const JobItem = ({
         <div>
           <h3 className="job-title">{title}</h3>
           <p className="job-company">Company: {company}</p>
+          <a
+            className="job-link"
+            href={job_url}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            🔗 View offer
+          </a>
           {details !== "" && <p className="job-details">Details: {details}</p>}
         </div>
 

@@ -1,5 +1,3 @@
-import "./Components.css";
-
 const statusClass = {
   applied: "status-applied",
   interview: "status-interview",

@@ -1,4 +1,3 @@
-import "./Components.css";
 import JobItem from "./JobItem";
 
 function JobsList({

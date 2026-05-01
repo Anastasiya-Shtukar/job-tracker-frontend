@@ -1,4 +1,3 @@
-import "./Components.css";
 const JobListControls = ({
   selectedStatus,
   onSelectedStatus,

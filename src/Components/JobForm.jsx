@@ -164,7 +164,7 @@ const JobForm = ({ onAddJob }) => {
         </div>
 
         <div className="form-top-row">
-          <div>
+          <div className="form-vacancy-row">
             <label className="form-label" htmlFor="title">
               Position title
             </label>
@@ -181,7 +181,7 @@ const JobForm = ({ onAddJob }) => {
             />
           </div>
 
-          <div>
+          <div className="form-vacancy-row">
             <label className="form-label" htmlFor="company">
               Company
             </label>
@@ -197,7 +197,7 @@ const JobForm = ({ onAddJob }) => {
               }}
             />
           </div>
-          <div>
+          <div className="form-vacancy-row">
             <label className="form-label" htmlFor="job_url">
               Job URL
             </label>
@@ -233,14 +233,16 @@ const JobForm = ({ onAddJob }) => {
           </div>
 
           {!suggestedDetails && (
-            <button
-              disabled={isGenerating}
-              className="primary-button form-submit ai-generate-button"
-              type="button"
-              onClick={handleGenerateSuggestion}
-            >
-              {isGenerating ? "Generating..." : "Generate with AI"}
-            </button>
+            <div className="form-inline-actions">
+              <button
+                disabled={isGenerating}
+                className="primary-button form-submit ai-generate-button"
+                type="button"
+                onClick={handleGenerateSuggestion}
+              >
+                {isGenerating ? "Generating..." : "Generate with AI"}
+              </button>
+            </div>
           )}
         </div>
 

@@ -95,7 +95,7 @@ const EditModal = ({ job, onSave, onClose }) => {
           <label className="form-label" htmlFor="edit-details">
             Details
           </label>
-          <input
+          <textarea
             className="form-input"
             id="edit-details"
             type="text"

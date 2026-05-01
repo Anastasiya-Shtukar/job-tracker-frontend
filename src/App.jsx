@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import JobsList from "./Components/JobList";
 import JobForm from "./Components/JobForm";
-import "./App.css";
 import { fetchJobs, createJob, deleteJob, updateJob } from "./Api";
 import JobListControls from "./Components/JobListControls";
 import EditModal from "./Components/EditModal";
@@ -167,13 +166,15 @@ function App() {
             sortOption={sortOption}
             onSortOption={setSortOption}
           />
-          <button
-            className="primary-button"
-            type="button"
-            onClick={() => setIsAddModalOpen(true)}
-          >
-            Add vacancy
-          </button>
+          <div className="controls-actions">
+            <button
+              className="primary-button"
+              type="button"
+              onClick={() => setIsAddModalOpen(true)}
+            >
+              Add vacancy
+            </button>
+          </div>
         </div>
         <div className="app-section">
           {jobs.length === 0 ? (

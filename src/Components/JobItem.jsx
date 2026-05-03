@@ -1,3 +1,5 @@
+import { useEffect, useRef } from "react";
+
 const statusClass = {
   applied: "status-applied",
   interview: "status-interview",
@@ -16,9 +18,24 @@ const JobItem = ({
   onUpdate,
   deletingJobId,
   updatingJobId,
+  highlightedJobId,
 }) => {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    if (id === highlightedJobId && ref.current) {
+      ref.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+  }, []);
+
   return (
-    <div className="job-card">
+    <div
+      className={`job-card ${id === highlightedJobId && "highlighted-job"}`}
+      ref={id === highlightedJobId ? ref : null}
+    >
       <div className="job-card-header">
         <div>
           <h3 className="job-title">{title}</h3>

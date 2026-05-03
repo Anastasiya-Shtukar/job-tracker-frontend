@@ -80,13 +80,13 @@ const generateSuggestion = async (details) => {
   return data.suggestion;
 };
 
-const extractJobData = async (text) => {
+const extractJobData = async (text, url) => {
   const response = await fetch(`${BASE_URL}/ai/extract-job`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ text }),
+    body: JSON.stringify({ text, url }),
   });
 
   const data = await response.json();

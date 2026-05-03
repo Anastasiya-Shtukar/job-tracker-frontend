@@ -10,14 +10,16 @@ const JobForm = ({ onAddJob }) => {
   const [aiError, setAiError] = useState(null);
   const [title, setTitle] = useState("");
   const [company, setCompany] = useState("");
+  const [aiJobUrl, setAiJobUrl] = useState("");
   const [jobUrl, setJobUrl] = useState("");
   const [details, setDetails] = useState("");
 
   const handleExtractJobData = async () => {
     const normalizedJobPostingText = jobPostingText.trim();
+    const normalizedAiJobUrl = aiJobUrl.trim();
 
-    if (!normalizedJobPostingText) {
-      setAiError("Add descriptions first");
+    if (!normalizedJobPostingText && !normalizedAiJobUrl) {
+      setAiError("Add job URL or descriptions first");
       return;
     }
 
@@ -26,7 +28,14 @@ const JobForm = ({ onAddJob }) => {
       setAiError(null);
       setSuggestedDetails(null);
 
-      const extractedJob = await extractJobData(normalizedJobPostingText);
+      if (normalizedAiJobUrl && !jobUrl.trim()) {
+        setJobUrl(normalizedAiJobUrl);
+      }
+
+      const extractedJob = await extractJobData(
+        normalizedJobPostingText,
+        normalizedAiJobUrl,
+      );
 
       if (extractedJob.title) {
         setTitle(extractedJob.title);
@@ -135,10 +144,29 @@ const JobForm = ({ onAddJob }) => {
           <div className="ai-extract-header">
             <p className="ai-extract-title">Extract job details with AI</p>
             <p className="ai-extract-description">
-              Paste the full job posting and AI will fill position title,
-              company and notes.
+              Paste a job URL and, if needed, the full job posting text. AI will
+              try to fill the fields below. You can review and edit everything
+              before saving.
             </p>
           </div>
+
+          <div className="form-vacancy-row">
+            <label className="form-label" htmlFor="ai-job-url">
+              Job URL for AI extraction
+            </label>
+            <input
+              className="form-input"
+              id="ai-job-url"
+              value={aiJobUrl}
+              type="text"
+              name="ai_job_url"
+              onChange={(e) => {
+                setAiJobUrl(e.target.value);
+                setAiError(null);
+              }}
+            />
+          </div>
+          {aiError && <div className="ai-hint">{aiError}</div>}
 
           <textarea
             id="job-posting-text"
@@ -162,7 +190,7 @@ const JobForm = ({ onAddJob }) => {
             </button>
           </div>
         </div>
-
+        <p className="manual-section-title">Or fill the details manually</p>
         <div className="form-top-row">
           <div className="form-vacancy-row">
             <label className="form-label" htmlFor="title">

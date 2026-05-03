@@ -4,6 +4,7 @@ import JobForm from "./Components/JobForm";
 import { fetchJobs, createJob, deleteJob, updateJob } from "./Api";
 import JobListControls from "./Components/JobListControls";
 import EditModal from "./Components/EditModal";
+import toast, { Toaster } from "react-hot-toast";
 
 function App() {
   const [jobs, setJobs] = useState([]);
@@ -16,6 +17,7 @@ function App() {
   const [deletingJobId, setDeletingJobId] = useState(null);
   const [updatingJobId, setUpdatingJobId] = useState(null);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [highlightedJobId, setHighlightedJobId] = useState(null);
 
   useEffect(() => {
     const loadJobs = async () => {
@@ -36,9 +38,21 @@ function App() {
   }, []);
 
   const addJob = async (newJob) => {
-    const data = await createJob(newJob);
+    try {
+      const data = await createJob(newJob);
 
-    setJobs((prevJobs) => [...prevJobs, data]);
+      setJobs((prevJobs) => [...prevJobs, data]);
+      toast.success("Job added successfully");
+      setHighlightedJobId(data.id);
+      setTimeout(() => {
+        setHighlightedJobId((currentId) =>
+          currentId === data.id ? null : currentId,
+        );
+      }, 2000);
+    } catch (error) {
+      toast.error(error.message);
+      throw error;
+    }
   };
 
   const handleDeleteJob = async (id) => {
@@ -49,8 +63,10 @@ function App() {
       await deleteJob(id);
 
       setJobs((prev) => prev.filter((job) => job.id !== id));
+      toast.success("Job deleted");
     } catch (error) {
       setError(error.message);
+      toast.error(error.message);
     } finally {
       setDeletingJobId(null);
     }
@@ -68,8 +84,10 @@ function App() {
           job.id === id ? { ...job, status: data.status } : job,
         ),
       );
+      toast.success("Status updated");
     } catch (error) {
       setError(error.message);
+      toast.error(error.message);
     } finally {
       setUpdatingJobId(null);
     }
@@ -81,29 +99,35 @@ function App() {
   };
 
   const handleSaveEdit = async (updatedJob) => {
-    setError(null);
-    const id = updatedJob.id;
+    try {
+      setError(null);
+      const id = updatedJob.id;
 
-    const data = await updateJob(id, {
-      title: updatedJob.title,
-      company: updatedJob.company,
-      details: updatedJob.details,
-    });
+      const data = await updateJob(id, {
+        title: updatedJob.title,
+        company: updatedJob.company,
+        details: updatedJob.details,
+      });
 
-    setJobs((prev) =>
-      prev.map((job) =>
-        job.id === id
-          ? {
-              ...job,
-              title: data.title,
-              company: data.company,
-              details: data.details,
-            }
-          : job,
-      ),
-    );
+      setJobs((prev) =>
+        prev.map((job) =>
+          job.id === id
+            ? {
+                ...job,
+                title: data.title,
+                company: data.company,
+                details: data.details,
+              }
+            : job,
+        ),
+      );
 
-    setEditingJob(null);
+      setEditingJob(null);
+      toast.success("Job updated");
+    } catch (error) {
+      toast.error(error.message);
+      throw error;
+    }
   };
 
   const onClose = () => {
@@ -153,6 +177,7 @@ function App() {
 
   return (
     <>
+      <Toaster position="top-center" />
       <div className="app">
         <h1 className="app-title">AI Job Tracker</h1>
 
@@ -193,6 +218,7 @@ function App() {
               onUpdate={onUpdate}
               deletingJobId={deletingJobId}
               updatingJobId={updatingJobId}
+              highlightedJobId={highlightedJobId}
             />
           )}
         </div>

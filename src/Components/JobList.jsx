@@ -7,6 +7,7 @@ function JobsList({
   onUpdate,
   deletingJobId,
   updatingJobId,
+  highlightedJobId,
 }) {
   return (
     <ul className="jobs-list">
@@ -19,6 +20,7 @@ function JobsList({
             onUpdate={onUpdate}
             deletingJobId={deletingJobId}
             updatingJobId={updatingJobId}
+            highlightedJobId={highlightedJobId}
           />
         </li>
       ))}

@@ -23,6 +23,8 @@ Add your backend repository link here.
 - Handle loading, submitting, updating, deleting, and AI-generation states
 - Show global and local error messages
 - Show empty states for different UI cases
+- Extract job data using AI (from pasted job text or URL)
+- Graceful fallback when URL extraction fails (manual paste required)
 
 ## Tech Stack
 
@@ -33,6 +35,32 @@ Add your backend repository link here.
 - CSS
 
 ## How It Works
+
+### AI extraction flow (URL + text)
+
+User provides:
+
+- job URL (optional)
+- full job posting text (optional but recommended)
+
+Flow:
+
+job URL or text  
+→ frontend request  
+→ backend attempts to fetch and clean content (if URL provided)  
+→ OpenAI API processes extracted text  
+→ structured data returned  
+→ frontend fills form fields  
+→ user reviews and edits before saving
+
+### Fallback behavior
+
+Not all job websites allow content extraction (e.g. LinkedIn, some job boards).
+
+If extraction from URL fails:
+
+- user sees a clear message
+- user can paste job posting text manually
 
 ### Main data flow
 
@@ -52,6 +80,14 @@ raw details input
 → OpenAI API  
 → suggestion returned  
 → user accepts, edits, or discards
+
+## UX decisions
+
+- AI never auto-saves data – user must confirm
+- Partial AI results are allowed and editable
+- Clear feedback is shown when extraction fails
+- UI separates AI-assisted flow from manual form entry
+- URL is treated as a required final field for tracking applications
 
 ## Architecture
 

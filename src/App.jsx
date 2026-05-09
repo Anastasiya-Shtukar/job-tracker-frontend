@@ -1,7 +1,16 @@
 import { useState, useEffect } from "react";
 import JobsList from "./Components/JobList";
 import JobForm from "./Components/JobForm";
-import { fetchJobs, createJob, deleteJob, updateJob } from "./Api";
+import AuthForm from "./Components/AuthForm";
+import {
+  fetchJobs,
+  createJob,
+  deleteJob,
+  updateJob,
+  loginUser,
+  registerUser,
+  fetchCurrentUser,
+} from "./Api";
 import JobListControls from "./Components/JobListControls";
 import EditModal from "./Components/EditModal";
 import toast, { Toaster } from "react-hot-toast";
@@ -18,28 +27,98 @@ function App() {
   const [updatingJobId, setUpdatingJobId] = useState(null);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [highlightedJobId, setHighlightedJobId] = useState(null);
+  const [user, setUser] = useState(null);
+  const [token, setToken] = useState(() => localStorage.getItem("token"));
+  const [authMode, setAuthMode] = useState("login");
+  const [isAuthLoading, setIsAuthLoading] = useState(true);
+
+  const clearSession = () => {
+    localStorage.removeItem("token");
+    setToken(null);
+    setUser(null);
+    setJobs([]);
+  };
+
+  const handleLogin = async (email, password) => {
+    const data = await loginUser(email, password);
+
+    localStorage.setItem("token", data.token);
+    setToken(data.token);
+    setUser(data.user);
+    toast.success("Logged in");
+  };
+
+  const handleRegister = async (email, password) => {
+    await registerUser(email, password);
+    const loginData = await loginUser(email, password);
+
+    localStorage.setItem("token", loginData.token);
+    setToken(loginData.token);
+    setUser(loginData.user);
+    toast.success("Account created and logged in");
+  };
+
+  const handleLogout = () => {
+    clearSession();
+  };
+
+  const toggleAuthMode = () => {
+    setAuthMode((prev) => (prev === "login" ? "register" : "login"));
+  };
+
+  useEffect(() => {
+    const loadUser = async () => {
+      if (!token) {
+        setIsAuthLoading(false);
+        return;
+      }
+
+      try {
+        const userData = await fetchCurrentUser(token);
+        setUser(userData);
+      } catch (err) {
+        if (err.message === "Unauthorized") {
+          clearSession();
+        }
+      } finally {
+        setIsAuthLoading(false);
+      }
+    };
+
+    loadUser();
+  }, [token]);
 
   useEffect(() => {
     const loadJobs = async () => {
+      if (!token) {
+        setLoading(false);
+        return;
+      }
       try {
         setLoading(true);
         setError(null);
 
-        const data = await fetchJobs();
+        const data = await fetchJobs(token);
 
         setJobs(data);
       } catch (err) {
+        if (err.message === "Unauthorized") {
+          clearSession();
+          toast.error("Session expired. Please log in again.");
+          return;
+        }
+
         setError(err.message);
       } finally {
         setLoading(false);
       }
     };
     loadJobs();
-  }, []);
+  }, [token]);
 
   const addJob = async (newJob) => {
     try {
-      const data = await createJob(newJob);
+      const data = await createJob(newJob, token);
 
       setJobs((prevJobs) => [...prevJobs, data]);
       toast.success("Job added successfully");
@@ -51,6 +130,9 @@ function App() {
       }, 2000);
     } catch (error) {
       toast.error(error.message);
+      if (error.message === "Unauthorized") {
+        clearSession();
+      }
       throw error;
     }
   };
@@ -60,12 +142,15 @@ function App() {
       setError(null);
       setDeletingJobId(id);
 
-      await deleteJob(id);
+      await deleteJob(id, token);
 
       setJobs((prev) => prev.filter((job) => job.id !== id));
       toast.success("Job deleted");
     } catch (error) {
       setError(error.message);
+      if (error.message === "Unauthorized") {
+        clearSession();
+      }
       toast.error(error.message);
     } finally {
       setDeletingJobId(null);
@@ -77,7 +162,7 @@ function App() {
       setUpdatingJobId(id);
       setError(null);
 
-      const data = await updateJob(id, { status: newStatus });
+      const data = await updateJob(id, { status: newStatus }, token);
 
       setJobs((prev) =>
         prev.map((job) =>
@@ -87,6 +172,9 @@ function App() {
       toast.success("Status updated");
     } catch (error) {
       setError(error.message);
+      if (error.message === "Unauthorized") {
+        clearSession();
+      }
       toast.error(error.message);
     } finally {
       setUpdatingJobId(null);
@@ -103,11 +191,15 @@ function App() {
       setError(null);
       const id = updatedJob.id;
 
-      const data = await updateJob(id, {
-        title: updatedJob.title,
-        company: updatedJob.company,
-        details: updatedJob.details,
-      });
+      const data = await updateJob(
+        id,
+        {
+          title: updatedJob.title,
+          company: updatedJob.company,
+          details: updatedJob.details,
+        },
+        token,
+      );
 
       setJobs((prev) =>
         prev.map((job) =>
@@ -126,6 +218,9 @@ function App() {
       toast.success("Job updated");
     } catch (error) {
       toast.error(error.message);
+      if (error.message === "Unauthorized") {
+        clearSession();
+      }
       throw error;
     }
   };
@@ -171,15 +266,47 @@ function App() {
     return 0;
   });
 
+  if (isAuthLoading) {
+    return <div className="loading">Loading...</div>;
+  }
+
+  if (!token) {
+    return (
+      <>
+        <Toaster position="top-center" />
+        <AuthForm
+          mode={authMode}
+          onLogin={handleLogin}
+          onRegister={handleRegister}
+          onToggleMode={toggleAuthMode}
+        />
+      </>
+    );
+  }
+
   if (loading) {
     return <div className="loading">Loading...</div>;
   }
 
   return (
     <>
-      <Toaster position="top-center" />
       <div className="app">
-        <h1 className="app-title">AI Job Tracker</h1>
+        <div className="app-header">
+          <h1 className="app-title">AI Job Tracker</h1>
+
+          <div className="app-user-actions">
+            <span className="user-email">
+              {user ? user.email : "Loading user..."}
+            </span>
+
+            <button
+              onClick={handleLogout}
+              className="secondary-button logout-button"
+            >
+              Logout
+            </button>
+          </div>
+        </div>
 
         {error && <div className="error-banner">{error}</div>}
         <div className="app-controls">

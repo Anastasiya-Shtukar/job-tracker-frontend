@@ -1,6 +1,6 @@
 # AI Job Tracker Frontend
 
-Frontend for the AI Job Tracker portfolio project. It helps track job applications, manage statuses, and use AI to improve job details before saving them.
+Frontend for the AI Job Tracker portfolio project. It helps users track job applications, manage statuses, use AI-assisted job parsing, and work with personal job data after authentication.
 
 ## Live App
 
@@ -10,21 +10,26 @@ Add your deployed frontend URL here.
 
 Add your backend repository link here.
 
-## Features
+## Main Features
 
+- User login and registration
+- Token-based session handling with `localStorage`
+- Automatic current-user check on app load
+- Logout and session cleanup
+- Protected job list: users only see their own jobs
 - Add a new job entry
 - Edit existing jobs in a modal
 - Delete jobs
 - Change application status
 - Filter jobs by status
 - Search by title or company
-- Sort jobs by company name
+- Sort jobs by creation date or company name
+- Extract job data with AI from pasted text or URL
 - Generate improved job details with AI
-- Handle loading, submitting, updating, deleting, and AI-generation states
-- Show global and local error messages
-- Show empty states for different UI cases
-- Extract job data using AI (from pasted job text or URL)
-- Graceful fallback when URL extraction fails (manual paste required)
+- Handle loading, submitting, updating, deleting, auth, and AI-generation states
+- Show toast notifications, local errors, global errors, and empty states
+- Auto-scroll and highlight newly added jobs
+- Graceful fallback when URL extraction fails
 
 ## Tech Stack
 
@@ -33,74 +38,124 @@ Add your backend repository link here.
 - JavaScript
 - Fetch API
 - CSS
+- react-hot-toast
 
-## How It Works
+## Authentication Flow
 
-### AI extraction flow (URL + text)
+On first load:
+
+```text
+localStorage token
+→ /auth/me request
+→ valid token: user is restored
+→ invalid token: token is removed and user is logged out
+```
+
+Login flow:
+
+```text
+email + password
+→ frontend validation
+→ POST /auth/login
+→ backend returns user + JWT
+→ token is stored in localStorage
+→ authenticated app is shown
+```
+
+Register flow:
+
+```text
+email + password
+→ POST /auth/register
+→ account is created
+→ frontend immediately logs the user in
+→ token is stored in localStorage
+```
+
+Logout flow:
+
+```text
+logout click
+→ token removed from localStorage
+→ user state cleared
+→ jobs state cleared
+→ auth form is shown
+```
+
+## Job Data Flow
+
+```text
+authenticated user
+→ fetch jobs with Bearer token
+→ store jobs in App.jsx state
+→ filter by status
+→ search by title/company
+→ sort
+→ render list
+```
+
+All job requests include the JWT token in the `Authorization` header.
+
+## AI Extraction Flow
 
 User provides:
 
-- job URL (optional)
-- full job posting text (optional but recommended)
+- job URL, or
+- full job posting text, or
+- both
 
 Flow:
 
-job URL or text  
-→ frontend request  
-→ backend attempts to fetch and clean content (if URL provided)  
-→ OpenAI API processes extracted text  
-→ structured data returned  
-→ frontend fills form fields  
+```text
+job URL or text
+→ frontend request
+→ backend attempts to fetch and clean page content if URL is provided
+→ OpenAI processes the source text
+→ structured data is returned
+→ frontend fills form fields
 → user reviews and edits before saving
+```
 
-### Fallback behavior
+AI never saves data automatically.
 
-Not all job websites allow content extraction (e.g. LinkedIn, some job boards).
+## AI Suggestion Flow
 
-If extraction from URL fails:
-
-- user sees a clear message
-- user can paste job posting text manually
-
-### Main data flow
-
-jobs  
-→ fetch from backend  
-→ store in state  
-→ filter by status  
-→ search by title/company  
-→ sort  
-→ render list
-
-### AI suggestion flow
-
-raw details input  
-→ frontend request  
-→ backend validation  
-→ OpenAI API  
-→ suggestion returned  
+```text
+raw details input
+→ frontend request
+→ backend validation
+→ OpenAI API
+→ suggestion returned
 → user accepts, edits, or discards
+```
 
-## UX decisions
+## UX Decisions
 
-- AI never auto-saves data – user must confirm
-- Partial AI results are allowed and editable
-- Clear feedback is shown when extraction fails
-- UI separates AI-assisted flow from manual form entry
-- URL is treated as a required final field for tracking applications
+- Authentication gates the main app instead of showing empty job data to anonymous users.
+- AI-assisted data is always editable before saving.
+- Partial AI extraction results are allowed.
+- URL extraction has manual fallback because many job boards block scraping.
+- Add and edit actions use modals to keep the main job list focused.
+- Toasts are used for successful actions and important failures.
+- Empty states explain whether there are no jobs, no matching statuses, or no search results.
 
 ## Architecture
 
-- `App.jsx` stores main application state and coordinates UI behavior.
-- `Api.js` contains all frontend requests to the backend.
-- Presentational and form logic are split into reusable components.
-- AI suggestion flow is isolated inside the job form.
+- `App.jsx` owns authentication state, job state, filtering, sorting, modal state, and main orchestration.
+- `Api.js` isolates all backend requests.
+- `AuthForm.jsx` handles login/register form UI and submit state.
+- `JobForm.jsx` handles job creation and AI-assisted fields.
+- `JobList.jsx` renders the list.
+- `JobItem.jsx` renders a single job card.
+- `JobListControls.jsx` handles filter/search/sort controls.
+- `EditModal.jsx` handles job editing.
 
 ## Project Structure
 
 ```text
 src/
   Components/
+    AuthForm.jsx
     EditModal.jsx
     JobForm.jsx
     JobItem.jsx
@@ -108,6 +163,8 @@ src/
     JobListControls.jsx
   Api.js
   App.jsx
+  main.jsx
+  styles/
 ```
 
 ## API Integration
@@ -118,7 +175,13 @@ The frontend uses an environment variable for the backend base URL:
 VITE_API_URL=your_backend_url
 ```
 
-Example:
+Local example:
+
+```env
+VITE_API_URL=http://localhost:3000
+```
+
+Production example:
 
 ```env
 VITE_API_URL=https://your-backend.onrender.com
@@ -134,7 +197,7 @@ npm install
 
 ### 2. Create environment file
 
-Create a `.env.local` file in the project root:
+Create `.env.local` in the frontend project root:
 
 ```env
 VITE_API_URL=http://localhost:3000
@@ -148,20 +211,22 @@ npm run dev
 
 ## Production
 
-The frontend is deployed on Vercel.
+The frontend is intended to be deployed on Vercel.
 
-For production, set:
+Required production environment variable:
 
 ```env
-VITE_API_URL=https://your-backend.onrender.com
+VITE_API_URL=https://your-backend-url
 ```
 
-## Notes
+## Current Limitations
 
-- The frontend does not access the OpenAI API directly.
-- AI requests go through the backend proxy.
-- Backend URL is configured through Vite environment variables.
+- Password reset is not implemented yet.
+- There is no email verification.
+- Token is stored in `localStorage`, which is simple but not the strongest production security model.
+- No pagination yet.
+- AI URL extraction is best-effort and depends on whether the source website allows server-side fetching.
 
 ## Portfolio Goal
 
-This project was built as a portfolio-ready fullstack application focused on real product behavior, clear data flow, and practical UX.
+This project is built as a portfolio-ready fullstack application focused on real product behavior, clean data flow, authentication, practical UX, and useful AI-assisted features.

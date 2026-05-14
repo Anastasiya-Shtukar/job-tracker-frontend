@@ -379,6 +379,7 @@ function App() {
                   await addJob(newJob);
                   setIsAddModalOpen(false);
                 }}
+                token={token}
               />
             </div>
           </div>

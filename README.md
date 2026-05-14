@@ -42,6 +42,10 @@ Add your backend repository link here.
 
 ## Authentication Flow
 
+Demo instruction:
+
+Create an account to test the app
+
 On first load:
 
 ```text

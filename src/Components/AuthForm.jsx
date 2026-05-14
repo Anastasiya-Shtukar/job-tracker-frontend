@@ -27,6 +27,11 @@ const AuthForm = ({ mode, onLogin, onRegister, onToggleMode }) => {
       return;
     }
 
+    if (!isLoginMode && password.length < 8) {
+      setError("Password is too short. Must be at least 8 characters");
+      return;
+    }
+
     try {
       setIsSubmitting(true);
       if (isLoginMode) {

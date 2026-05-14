@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { extractJobData, generateSuggestion } from "../Api";
 
-const JobForm = ({ onAddJob }) => {
+const JobForm = ({ onAddJob, token }) => {
   const [error, setError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [suggestedDetails, setSuggestedDetails] = useState(null);
@@ -35,6 +35,7 @@ const JobForm = ({ onAddJob }) => {
       const extractedJob = await extractJobData(
         normalizedJobPostingText,
         normalizedAiJobUrl,
+        token,
       );
 
       if (extractedJob.title) {
@@ -86,7 +87,7 @@ const JobForm = ({ onAddJob }) => {
       setAiError(null);
       setSuggestedDetails(null);
 
-      const data = await generateSuggestion(details);
+      const data = await generateSuggestion(details, token);
 
       setSuggestedDetails(data);
     } catch (error) {

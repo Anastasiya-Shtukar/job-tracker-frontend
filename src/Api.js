@@ -71,11 +71,12 @@ const createJob = async (newJob, token) => {
   return data.job;
 };
 
-const generateSuggestion = async (details) => {
+const generateSuggestion = async (details, token) => {
   const response = await fetch(`${BASE_URL}/ai/suggest-details`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({ details }),
   });
@@ -89,11 +90,12 @@ const generateSuggestion = async (details) => {
   return data.suggestion;
 };
 
-const extractJobData = async (text, url) => {
+const extractJobData = async (text, url, token) => {
   const response = await fetch(`${BASE_URL}/ai/extract-job`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({ text, url }),
   });

@@ -13,7 +13,10 @@ import {
 } from "./Api";
 import JobListControls from "./Components/JobListControls";
 import EditModal from "./Components/EditModal";
+import AppHeader from "./Components/AppHeader";
 import toast, { Toaster } from "react-hot-toast";
+import AddJobModal from "./Components/AddJobModal.jsx";
+import JobStats from "./Components/JobStats.jsx";
 
 function App() {
   const [jobs, setJobs] = useState([]);
@@ -225,8 +228,20 @@ function App() {
     }
   };
 
+  const totalJobs = jobs.length;
+
+  const appliedJobs = jobs.filter((job) => job.status === "applied").length;
+
+  const interviewJobs = jobs.filter((job) => job.status === "interview").length;
+
+  const rejectedJobs = jobs.filter((job) => job.status === "rejected").length;
+
   const onClose = () => {
     setEditingJob(null);
+  };
+
+  const closeAddJobModal = () => {
+    setIsAddModalOpen(false);
   };
 
   const normalizedQuery = searchQuery.toUpperCase().trim();
@@ -291,24 +306,17 @@ function App() {
   return (
     <>
       <div className="app">
-        <div className="app-header">
-          <h1 className="app-title">AI Job Tracker</h1>
-
-          <div className="app-user-actions">
-            <span className="user-email">
-              {user ? user.email : "Loading user..."}
-            </span>
-
-            <button
-              onClick={handleLogout}
-              className="secondary-button logout-button"
-            >
-              Logout
-            </button>
-          </div>
-        </div>
+        <AppHeader email={user?.email} onLogOut={handleLogout} />
 
         {error && <div className="error-banner">{error}</div>}
+
+        <JobStats
+          total={totalJobs}
+          applied={appliedJobs}
+          interview={interviewJobs}
+          rejected={rejectedJobs}
+        />
+
         <div className="app-controls">
           <JobListControls
             selectedStatus={selectedStatus}
@@ -351,38 +359,17 @@ function App() {
         </div>
         {editingJob !== null && (
           <EditModal
-            job={editingJob}
+            id={editingJob.id}
+            title={editingJob.title}
+            company={editingJob.company}
+            details={editingJob.details}
             onSave={handleSaveEdit}
             onClose={onClose}
           />
         )}
 
         {isAddModalOpen && (
-          <div
-            className="background-modal"
-            onClick={() => setIsAddModalOpen(false)}
-          >
-            <div
-              className="modal add-job-modal"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <button
-                type="button"
-                className="modal-close-btn"
-                onClick={() => setIsAddModalOpen(false)}
-              >
-                ×
-              </button>
-
-              <JobForm
-                onAddJob={async (newJob) => {
-                  await addJob(newJob);
-                  setIsAddModalOpen(false);
-                }}
-                token={token}
-              />
-            </div>
-          </div>
+          <AddJobModal onClose={closeAddJobModal} onAddJob={addJob} />
         )}
       </div>
     </>

@@ -3,10 +3,15 @@
   .form-top-row {
     grid-template-columns: 1fr;
   }
-  .form-submit { width: 100%; }
+  .form-submit {
+    width: 100%;
+  }
   .app-header {
     align-items: stretch;
     flex-direction: column;
+  }
+  .job-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 @media (max-width: 640px) {
@@ -14,7 +19,9 @@
     width: min(100% - 28px, 1120px);
     padding: 32px 0 48px;
   }
-  .app-title { font-size: 2rem; }
+  .app-title {
+    font-size: 2rem;
+  }
   .background-modal {
     padding: 14px;
     align-items: flex-start;
@@ -32,7 +39,9 @@
     flex-direction: column;
     align-items: flex-start;
   }
-  .job-title { font-size: 1.3rem; }
+  .job-title {
+    font-size: 1.3rem;
+  }
   .job-actions,
   .ai-actions,
   .modal-actions {
@@ -46,5 +55,8 @@
   .modal-cancel-btn,
   .modal-save-btn {
     width: 100%;
+  }
+  .job-stats {
+    grid-template-columns: 1fr;
   }
 }

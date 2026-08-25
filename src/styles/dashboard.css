@@ -1,0 +1,29 @@
+.job-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.stat-card {
+  padding: 18px 20px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card-soft);
+}
+
+.stat-label {
+  margin: 0 0 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+}
+
+.stat-value {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--color-text);
+}

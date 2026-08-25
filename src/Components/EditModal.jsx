@@ -1,9 +1,16 @@
 import { useState } from "react";
 
-const EditModal = ({ job, onSave, onClose }) => {
-  const [title, setTitle] = useState(job.title);
-  const [company, setCompany] = useState(job.company);
-  const [details, setDetails] = useState(job.details);
+const EditModal = ({
+  id,
+  title: initialTitle,
+  company: initialCompany,
+  details: initialDetails,
+  onSave,
+  onClose,
+}) => {
+  const [title, setTitle] = useState(initialTitle);
+  const [company, setCompany] = useState(initialCompany);
+  const [details, setDetails] = useState(initialDetails);
   const [error, setError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -19,7 +26,7 @@ const EditModal = ({ job, onSave, onClose }) => {
       return;
     }
     const updateJob = {
-      ...job,
+      id,
       title: normalizedTitle,
       company: normalizedCompany,
       details: normalizedDetails,

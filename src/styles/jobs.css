@@ -6,56 +6,107 @@
   flex-direction: column;
   gap: 18px;
 }
+
 .jobs-list-item {
   margin: 0;
   padding: 0;
 }
+
 .job-card {
-  padding: 22px;
+  padding: 24px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
   box-shadow: var(--shadow-card-soft);
+  transition:
+    border-color var(--transition-base),
+    box-shadow var(--transition-base),
+    transform var(--transition-base);
 }
+
+.job-card:hover {
+  border-color: var(--color-border-strong);
+  box-shadow: var(--shadow-card);
+}
+
 .job-card-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: var(--space-md);
-  margin-bottom: 18px;
+  gap: var(--space-lg);
 }
+
+.job-card-heading {
+  min-width: 0;
+}
+
 .job-title {
-  margin: 0 0 10px;
+  margin: 0;
   font-size: 1.45rem;
   font-weight: 900;
   line-height: 1.15;
   letter-spacing: -0.01em;
-  text-transform: uppercase;
   color: var(--color-text);
 }
+
 .job-company {
-  margin: 0;
-  font-size: 1.05rem;
+  margin: 6px 0 0;
+  font-size: 1rem;
   color: var(--color-text-soft);
 }
+
+.job-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  margin-top: var(--space-md);
+}
+
+.job-meta-item {
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+
 .job-link {
-  display: inline-block;
-  margin-top: 6px;
-  font-size: 14px;
+  font-size: 13px;
+  font-weight: 600;
   color: var(--color-link);
   text-decoration: none;
-  font-weight: 600;
-  transition: color var(--transition-base), text-decoration-color var(--transition-base);
+  transition:
+    color var(--transition-base),
+    text-decoration-color var(--transition-base);
 }
+
 .job-link:hover {
   color: var(--color-link-hover);
   text-decoration: underline;
 }
-.job-details {
-  margin: 8px 0 0;
-  font-size: 14px;
+
+.job-details-section {
+  margin-top: var(--space-lg);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--color-border);
+}
+
+.job-details-label {
+  margin: 0 0 6px;
+  font-size: 13px;
+  font-weight: 600;
   color: var(--color-text-muted);
-  line-height: 1.55;
-  max-width: 680px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.job-details {
+  margin: 0;
+  max-width: 900px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--color-text-soft);
   word-break: break-word;
 }
+
 .status-badge {
   flex-shrink: 0;
   padding: 8px 14px;
@@ -65,23 +116,100 @@
   color: #fff;
   text-transform: lowercase;
 }
-.status-applied { background-color: #64748b; }
-.status-interview { background-color: #2563eb; }
-.status-rejected { background-color: var(--color-danger); }
+
+.status-applied {
+  background-color: #64748b;
+}
+
+.status-interview {
+  background-color: #2563eb;
+}
+
+.status-rejected {
+  background-color: var(--color-danger);
+}
+
 .job-actions {
   display: flex;
-  align-items: center;
-  gap: 12px;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-md);
+  margin-top: var(--space-lg);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--color-border);
   flex-wrap: wrap;
 }
+
+.job-status-control {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.job-status-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
 .job-status-select {
   min-width: 150px;
   height: 44px;
   padding: 0 12px;
   border: 1px solid var(--color-border-strong);
-  border-radius: 12px;
+  border-radius: var(--radius-sm);
   background-color: var(--color-surface);
   color: var(--color-text);
   outline: none;
-  transition: border-color var(--transition-base), box-shadow var(--transition-base);
+  font: inherit;
+  transition:
+    border-color var(--transition-base),
+    box-shadow var(--transition-base);
+}
+
+.job-status-select:focus {
+  border-color: var(--color-link);
+  box-shadow: 0 0 0 3px var(--color-focus);
+}
+
+.job-action-buttons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.job-edit-button {
+  min-width: 84px;
+}
+
+@media (max-width: 700px) {
+  .job-card {
+    padding: 18px;
+  }
+
+  .job-card-header {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .job-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .job-status-control {
+    width: 100%;
+  }
+
+  .job-status-select {
+    width: 100%;
+  }
+
+  .job-action-buttons {
+    width: 100%;
+  }
+
+  .job-action-buttons button {
+    flex: 1;
+  }
 }

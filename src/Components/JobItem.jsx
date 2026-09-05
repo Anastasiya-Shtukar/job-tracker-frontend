@@ -92,12 +92,24 @@ const JobItem = ({
           ) : isDetailsExpanded ? (
             <div>
               <p className="job-details">{details}</p>
-              <button>Show less</button>
+              <button
+                type="button"
+                className="details-toggle-button"
+                onClick={() => setIsDetailsExpanded(false)}
+              >
+                Show less
+              </button>
             </div>
           ) : (
             <div>
               <p className="job-details">{lessDetails}...</p>
-              <button>Show more</button>
+              <button
+                type="button"
+                className="details-toggle-button"
+                onClick={() => setIsDetailsExpanded(true)}
+              >
+                Show more
+              </button>
             </div>
           )}
         </div>

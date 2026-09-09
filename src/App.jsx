@@ -17,6 +17,7 @@ import AppHeader from "./Components/AppHeader";
 import toast, { Toaster } from "react-hot-toast";
 import AddJobModal from "./Components/AddJobModal.jsx";
 import JobStats from "./Components/JobStats.jsx";
+import JobBoard from "./Components/JobBoard.jsx";
 
 function App() {
   const [jobs, setJobs] = useState([]);
@@ -378,7 +379,15 @@ function App() {
               highlightedJobId={highlightedJobId}
             />
           ) : (
-            <div>Board view</div>
+            <JobBoard
+              jobs={sortedJobs}
+              onDelete={handleDeleteJob}
+              onStatusChange={statusChange}
+              onUpdate={onUpdate}
+              deletingJobId={deletingJobId}
+              updatingJobId={updatingJobId}
+              highlightedJobId={highlightedJobId}
+            />
           )}
         </div>
         {editingJob !== null && (

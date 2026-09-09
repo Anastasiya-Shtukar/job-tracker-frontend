@@ -34,6 +34,7 @@ function App() {
   const [token, setToken] = useState(() => localStorage.getItem("token"));
   const [authMode, setAuthMode] = useState("login");
   const [isAuthLoading, setIsAuthLoading] = useState(true);
+  const [viewMode, setViewMode] = useState("list");
 
   const clearSession = () => {
     localStorage.removeItem("token");
@@ -336,6 +337,27 @@ function App() {
             </button>
           </div>
         </div>
+        <div className="view-toggle">
+          <button
+            type="button"
+            className={`view-toggle-button ${
+              viewMode === "list" ? "active" : ""
+            }`}
+            onClick={() => setViewMode("list")}
+          >
+            List
+          </button>
+
+          <button
+            type="button"
+            className={`view-toggle-button ${
+              viewMode === "board" ? "active" : ""
+            }`}
+            onClick={() => setViewMode("board")}
+          >
+            Board
+          </button>
+        </div>
         <div className="app-section">
           {jobs.length === 0 ? (
             <p className="empty-state">You don't have any vacancies yet</p>
@@ -345,7 +367,7 @@ function App() {
             </p>
           ) : normalizedQuery !== "" && searchQueryFilter.length === 0 ? (
             <p className="empty-state">Nothing was found for your request</p>
-          ) : (
+          ) : viewMode === "list" ? (
             <JobsList
               jobs={sortedJobs}
               onDelete={handleDeleteJob}
@@ -355,6 +377,8 @@ function App() {
               updatingJobId={updatingJobId}
               highlightedJobId={highlightedJobId}
             />
+          ) : (
+            <div>Board view</div>
           )}
         </div>
         {editingJob !== null && (

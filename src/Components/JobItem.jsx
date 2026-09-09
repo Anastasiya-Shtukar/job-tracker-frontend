@@ -34,8 +34,8 @@ const JobItem = ({
 }) => {
   const ref = useRef(null);
   const [isDetailsExpanded, setIsDetailsExpanded] = useState(false);
-  const isLongDetails = details?.length > 180;
-  const lessDetails = details?.slice(0, 180);
+  const isLongDetails = details?.length > 150;
+  const lessDetails = details?.slice(0, 150);
 
   useEffect(() => {
     if (id === highlightedJobId && ref.current) {

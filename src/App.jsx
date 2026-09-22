@@ -315,7 +315,7 @@ function App() {
 
   return (
     <>
-      <div className="app">
+      <div className={`app theme-${theme}`}>
         <AppHeader
           email={user?.email}
           onLogOut={handleLogout}

@@ -1,14 +1,18 @@
 .app {
-  width: min(1120px, calc(100% - 32px));
+  width: min(1480px, calc(100% - 32px));
   margin: 0 auto;
-  padding: 48px 0 64px;
+  padding: 24px 0 64px;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
 }
 .app-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-md);
-  margin-bottom: var(--space-lg);
+  margin-bottom: 0;
 }
 .app-title {
   margin: 0;
@@ -19,7 +23,7 @@
   color: var(--color-heading);
 }
 .app-section {
-  margin-top: var(--space-lg);
+  margin-top: 0;
 }
 .app-controls,
 .job-form-container,

@@ -36,6 +36,14 @@ function App() {
   const [authMode, setAuthMode] = useState("login");
   const [isAuthLoading, setIsAuthLoading] = useState(true);
   const [viewMode, setViewMode] = useState("list");
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem("theme") || "cute";
+  });
+
+  useEffect(() => {
+    document.body.dataset.theme = theme;
+    localStorage.setItem("theme", theme);
+  }, [theme]);
 
   const clearSession = () => {
     localStorage.removeItem("token");
@@ -308,7 +316,12 @@ function App() {
   return (
     <>
       <div className="app">
-        <AppHeader email={user?.email} onLogOut={handleLogout} />
+        <AppHeader
+          email={user?.email}
+          onLogOut={handleLogout}
+          theme={theme}
+          onThemeChange={setTheme}
+        />
 
         {error && <div className="error-banner">{error}</div>}
 

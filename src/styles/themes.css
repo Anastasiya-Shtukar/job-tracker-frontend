@@ -1,0 +1,1385 @@
+/* =========================================================
+   SHARED THEME TRANSITIONS
+   ========================================================= */
+
+body,
+.app,
+.app-controls,
+.job-card,
+.job-board-column,
+.stat-card,
+.form-input,
+.control-input,
+.control-select,
+.job-status-select,
+.primary-button,
+.secondary-button,
+.delete-button,
+.view-toggle,
+.view-toggle-button,
+.modal {
+  transition:
+    background-color 220ms ease,
+    color 220ms ease,
+    border-color 220ms ease,
+    box-shadow 220ms ease;
+}
+
+body {
+  position: relative;
+  min-height: 100vh;
+}
+
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  left: 0;
+  width: 100%;
+  pointer-events: none;
+  z-index: -1;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+body::before {
+  top: 0;
+  height: 240px;
+  background-position: top center;
+}
+
+body::after {
+  bottom: 0;
+  height: 300px;
+  background-position: bottom center;
+}
+
+.theme-switch {
+  display: inline-flex;
+  overflow: hidden;
+
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-pill);
+}
+
+.theme-switch-button {
+  min-height: 36px;
+
+  padding: 0 13px;
+
+  border: 0;
+
+  background: transparent;
+
+  color: var(--color-text-muted);
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+/* =========================================================
+   CUTE THEME
+   soft notebook / floral / warm stationery
+   ========================================================= */
+
+body[data-theme="cute"] {
+  --color-page: #fff8f4;
+
+  --color-surface: rgba(255, 253, 250, 0.92);
+  --color-surface-soft: #fff2ec;
+  --color-surface-muted: #fff8f4;
+
+  --color-text: #352d32;
+  --color-text-soft: #6c5962;
+  --color-text-muted: #967d89;
+  --color-heading: #342a30;
+
+  --color-border: #f1d9d4;
+  --color-border-strong: #e9c3bf;
+
+  --color-primary: #ee7180;
+  --color-primary-hover: #dd5f70;
+
+  --color-secondary: #f9e1df;
+
+  --color-link: #c85d76;
+  --color-link-hover: #a94661;
+
+  --color-danger: #db6874;
+  --color-danger-bg: #fff0f1;
+  --color-danger-border: #f0bbc1;
+  --color-danger-text: #af4350;
+
+  --color-focus: rgba(224, 107, 126, 0.16);
+
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 20px;
+  --radius-xl: 26px;
+  --radius-pill: 999px;
+
+  --shadow-card:
+    0 8px 24px rgba(123, 76, 88, 0.07), 0 2px 5px rgba(123, 76, 88, 0.04);
+
+  --shadow-card-soft: 0 5px 18px rgba(123, 76, 88, 0.055);
+
+  --shadow-modal: 0 30px 90px rgba(81, 50, 61, 0.22);
+
+  background-color: var(--color-page);
+
+  background-image:
+    radial-gradient(
+      circle at 7% 10%,
+      rgba(244, 182, 191, 0.2) 0 3px,
+      transparent 4px
+    ),
+    radial-gradient(
+      circle at 93% 16%,
+      rgba(180, 188, 157, 0.16) 0 4px,
+      transparent 5px
+    ),
+    linear-gradient(rgba(255, 255, 255, 0.25) 1px, transparent 1px);
+
+  background-size:
+    90px 90px,
+    120px 120px,
+    100% 32px;
+
+  color: var(--color-text);
+}
+
+/* ---------- cute app ---------- */
+
+body[data-theme="cute"] .theme-switch {
+  padding: 3px;
+
+  border-color: #ebcfcf;
+
+  background: #fff0ec;
+}
+
+body[data-theme="cute"] .theme-switch-button {
+  border-radius: var(--radius-pill);
+}
+
+body[data-theme="cute"] .theme-switch-button.active {
+  background: #f7c7c8;
+
+  color: #573d47;
+}
+
+body[data-theme="cute"] .app {
+  position: relative;
+}
+
+body[data-theme="cute"] .app::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.22;
+
+  background:
+    radial-gradient(circle at 3% 4%, #efa7b5 0 5px, transparent 6px),
+    radial-gradient(circle at 97% 8%, #c6d0ae 0 5px, transparent 6px),
+    radial-gradient(circle at 4% 92%, #e9a9bd 0 4px, transparent 5px);
+}
+
+body[data-theme="cute"] .app-header {
+  position: relative;
+  padding: 28px 32px;
+  overflow: hidden;
+
+  background: linear-gradient(
+    135deg,
+    rgba(255, 249, 245, 0.96),
+    rgba(255, 240, 237, 0.88)
+  );
+
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+}
+
+body[data-theme="cute"] .app-header::before {
+  content: "✿";
+  position: absolute;
+  left: 18px;
+  bottom: -16px;
+
+  font-size: 74px;
+  color: rgba(231, 128, 148, 0.13);
+
+  transform: rotate(-15deg);
+}
+
+body[data-theme="cute"] .app-header::after {
+  content: "small steps, big opportunities ♡";
+  position: absolute;
+  left: 34px;
+  bottom: 12px;
+
+  font-size: 11px;
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+
+  color: var(--color-text-muted);
+}
+
+body[data-theme="cute"] .app-title {
+  padding-bottom: 14px;
+
+  font-family: "Segoe Print", "Bradley Hand", cursive;
+
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 600;
+
+  color: #44323b;
+}
+
+/* ---------- cute stats ---------- */
+
+body[data-theme="cute"] .stat-card {
+  position: relative;
+  overflow: hidden;
+
+  background: linear-gradient(145deg, #fffdfa, #fff4ef);
+
+  border-color: #f1dcd7;
+}
+
+body[data-theme="cute"] .stat-card::after {
+  content: "✿";
+  position: absolute;
+  right: 12px;
+  bottom: -3px;
+
+  font-size: 30px;
+  color: rgba(221, 112, 134, 0.13);
+}
+
+body[data-theme="cute"] .stat-label {
+  color: #9c7886;
+}
+
+body[data-theme="cute"] .stat-value {
+  color: #4a3740;
+}
+
+/* ---------- cute controls ---------- */
+
+body[data-theme="cute"] .app-controls {
+  position: relative;
+
+  background: linear-gradient(
+    135deg,
+    rgba(255, 253, 250, 0.96),
+    rgba(255, 244, 240, 0.94)
+  );
+
+  border-color: var(--color-border);
+
+  box-shadow:
+    var(--shadow-card),
+    inset 0 1px rgba(255, 255, 255, 0.8);
+}
+
+body[data-theme="cute"] .control-label,
+body[data-theme="cute"] .form-label,
+body[data-theme="cute"] .job-status-label {
+  color: #684d58;
+}
+
+body[data-theme="cute"] .control-input,
+body[data-theme="cute"] .control-select,
+body[data-theme="cute"] .form-input,
+body[data-theme="cute"] .job-status-select {
+  background: rgba(255, 255, 255, 0.8);
+
+  border-color: #ebd2cf;
+
+  color: #493840;
+}
+
+body[data-theme="cute"] .control-input::placeholder {
+  color: #b39ba4;
+}
+
+/* ---------- cute buttons ---------- */
+
+body[data-theme="cute"] .primary-button,
+body[data-theme="cute"] .modal-save-btn {
+  border: 1px solid rgba(199, 73, 99, 0.15);
+
+  background: linear-gradient(135deg, #f07c89, #e76579);
+
+  color: white;
+
+  box-shadow: 0 7px 16px rgba(221, 93, 117, 0.2);
+}
+
+body[data-theme="cute"] .primary-button:hover:not(:disabled),
+body[data-theme="cute"] .modal-save-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #e96d7c, #d9576e);
+}
+
+body[data-theme="cute"] .secondary-button {
+  background: #f9e7e4;
+
+  color: #654c56;
+
+  border: 1px solid #efd6d2;
+}
+
+body[data-theme="cute"] .delete-button {
+  background: #fffaf8;
+
+  color: #b45665;
+
+  border-color: #efcbd0;
+}
+
+/* ---------- cute list toggle ---------- */
+
+body[data-theme="cute"] .view-toggle {
+  background: #fff0eb;
+
+  border-color: #efd9d4;
+}
+
+body[data-theme="cute"] .view-toggle-button {
+  color: #8c6d79;
+
+  border-radius: 10px;
+}
+
+body[data-theme="cute"] .view-toggle-button.active {
+  background: #ffffff;
+
+  color: #583e48;
+
+  box-shadow: 0 3px 10px rgba(133, 76, 91, 0.1);
+}
+
+/* ---------- cute cards ---------- */
+
+body[data-theme="cute"] .job-card {
+  position: relative;
+  overflow: hidden;
+
+  background: linear-gradient(145deg, #fffefa, #fff8f4);
+
+  border-color: #efdcd6;
+}
+
+body[data-theme="cute"] .job-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+
+  width: 4px;
+
+  background: #ef9aaa;
+}
+
+body[data-theme="cute"] .job-card:hover {
+  transform: translateY(-2px);
+
+  border-color: #e5bbb7;
+
+  box-shadow: 0 15px 34px rgba(132, 78, 92, 0.1);
+}
+
+body[data-theme="cute"] .job-title {
+  color: #49343d;
+}
+
+body[data-theme="cute"] .job-company {
+  color: #765e68;
+}
+
+body[data-theme="cute"] .job-meta-item {
+  color: #a08490;
+}
+
+body[data-theme="cute"] .job-details-section,
+body[data-theme="cute"] .job-actions {
+  border-color: #f1ded9;
+}
+
+/* ---------- cute statuses ---------- */
+
+body[data-theme="cute"] .status-applied {
+  background: #9eafc2;
+}
+
+body[data-theme="cute"] .status-interview {
+  background: #a893c4;
+}
+
+body[data-theme="cute"] .status-rejected {
+  background: #e7808f;
+}
+
+/* ---------- cute board ---------- */
+
+body[data-theme="cute"] .job-board {
+  gap: 18px;
+}
+
+body[data-theme="cute"] .job-board-column {
+  position: relative;
+
+  min-height: 400px;
+
+  background: linear-gradient(
+    180deg,
+    rgba(255, 248, 244, 0.95),
+    rgba(255, 252, 248, 0.94)
+  );
+
+  border-color: #efdcd7;
+
+  box-shadow: 0 8px 22px rgba(124, 77, 89, 0.055);
+}
+
+body[data-theme="cute"] .job-board-column > h3 {
+  padding-bottom: 12px;
+
+  border-bottom: 1px dashed #e7c8c5;
+
+  font-family: "Segoe Print", "Bradley Hand", cursive;
+
+  font-size: 18px;
+
+  color: #59424c;
+}
+
+body[data-theme="cute"] .job-board-column:nth-child(1) > h3::before {
+  content: "✿ ";
+  color: #e98ca1;
+}
+
+body[data-theme="cute"] .job-board-column:nth-child(2) > h3::before {
+  content: "❀ ";
+  color: #90a783;
+}
+
+body[data-theme="cute"] .job-board-column:nth-child(3) > h3::before {
+  content: "✿ ";
+  color: #db7485;
+}
+
+/* =========================================================
+   BRUTAL THEME
+   newspaper / office / industrial print
+   ========================================================= */
+
+body[data-theme="brutal"] {
+  --color-page: #d9d4ca;
+
+  --color-surface: #e9e5dc;
+  --color-surface-soft: #d8d4ca;
+  --color-surface-muted: #ded9cf;
+
+  --color-text: #111111;
+  --color-text-soft: #292929;
+  --color-text-muted: #5c5a56;
+
+  --color-heading: #070707;
+
+  --color-border: #77736c;
+  --color-border-strong: #171717;
+
+  --color-primary: #111111;
+  --color-primary-hover: #292929;
+
+  --color-secondary: #d1ccc2;
+
+  --color-link: #111111;
+  --color-link-hover: #55514c;
+
+  --color-danger: #111111;
+  --color-danger-bg: #d9d4ca;
+  --color-danger-border: #111111;
+  --color-danger-text: #111111;
+
+  --color-focus: rgba(0, 0, 0, 0.12);
+
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
+  --radius-xl: 0;
+  --radius-pill: 0;
+
+  --shadow-card: none;
+  --shadow-card-soft: none;
+  --shadow-modal: 12px 12px 0 rgba(0, 0, 0, 0.35);
+
+  background-color: #d7d2c7;
+
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.022) 1px, transparent 1px),
+    radial-gradient(rgba(0, 0, 0, 0.045) 0.7px, transparent 0.7px);
+
+  background-size:
+    34px 34px,
+    34px 34px,
+    5px 5px;
+
+  color: #111;
+
+  font-family: "Courier New", Courier, monospace;
+}
+
+/* ---------- brutal app ---------- */
+
+body[data-theme="brutal"] .theme-switch {
+  border: 1.5px solid #111;
+
+  border-radius: 0;
+}
+
+body[data-theme="brutal"] .theme-switch-button {
+  border-radius: 0;
+
+  color: #111;
+
+  text-transform: uppercase;
+
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body[data-theme="brutal"] .theme-switch-button + .theme-switch-button {
+  border-left: 1.5px solid #111;
+}
+
+body[data-theme="brutal"] .theme-switch-button.active {
+  background: #111;
+
+  color: #eeeae2;
+}
+
+body[data-theme="brutal"] .app {
+  width: min(1240px, calc(100% - 32px));
+}
+
+body[data-theme="brutal"] .app-header {
+  position: relative;
+
+  padding: 28px 20px 24px;
+
+  border-top: 4px solid #111;
+  border-bottom: 2px solid #111;
+
+  margin-bottom: 28px;
+}
+
+body[data-theme="brutal"] .app-header::after {
+  content: "APPLY / TRACK / IMPROVE / REPEAT";
+
+  position: absolute;
+  left: 20px;
+  bottom: 7px;
+
+  font-size: 11px;
+  letter-spacing: 0.13em;
+
+  color: #333;
+}
+
+body[data-theme="brutal"] .app-title {
+  padding-bottom: 16px;
+
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+
+  font-size: clamp(2.5rem, 6vw, 5rem);
+
+  font-weight: 900;
+
+  letter-spacing: 0.015em;
+
+  line-height: 0.88;
+
+  text-transform: uppercase;
+
+  color: #080808;
+}
+
+body[data-theme="brutal"] .user-email {
+  font-size: 12px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.08em;
+
+  opacity: 1;
+}
+
+/* ---------- brutal controls ---------- */
+
+body[data-theme="brutal"] .app-controls {
+  padding: 20px;
+
+  border: 2px solid #111;
+
+  background: rgba(232, 228, 218, 0.86);
+
+  box-shadow: none;
+}
+
+body[data-theme="brutal"] .control-label,
+body[data-theme="brutal"] .form-label,
+body[data-theme="brutal"] .job-status-label {
+  color: #111;
+
+  font-family: Arial, Helvetica, sans-serif;
+
+  font-weight: 900;
+
+  text-transform: uppercase;
+
+  font-size: 12px;
+
+  letter-spacing: 0.05em;
+}
+
+body[data-theme="brutal"] .control-input,
+body[data-theme="brutal"] .control-select,
+body[data-theme="brutal"] .form-input,
+body[data-theme="brutal"] .job-status-select {
+  border: 1.5px solid #111;
+
+  background: rgba(241, 238, 229, 0.8);
+
+  color: #111;
+
+  border-radius: 0;
+
+  box-shadow: none;
+}
+
+body[data-theme="brutal"] .control-input:focus,
+body[data-theme="brutal"] .control-select:focus,
+body[data-theme="brutal"] .form-input:focus,
+body[data-theme="brutal"] .job-status-select:focus {
+  border-color: #111;
+
+  box-shadow: 4px 4px 0 #111;
+}
+
+/* ---------- brutal buttons ---------- */
+
+body[data-theme="brutal"] .primary-button,
+body[data-theme="brutal"] .modal-save-btn {
+  border: 2px solid #111;
+
+  border-radius: 0;
+
+  background: #111;
+
+  color: #f3f0e9;
+
+  font-family: Arial, Helvetica, sans-serif;
+
+  font-weight: 900;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.06em;
+
+  box-shadow: none;
+}
+
+body[data-theme="brutal"] .primary-button:hover:not(:disabled),
+body[data-theme="brutal"] .modal-save-btn:hover:not(:disabled) {
+  background: transparent;
+
+  color: #111;
+
+  transform: none;
+}
+
+body[data-theme="brutal"] .secondary-button,
+body[data-theme="brutal"] .delete-button,
+body[data-theme="brutal"] .ai-secondary-button,
+body[data-theme="brutal"] .modal-cancel-btn {
+  border: 1.5px solid #111;
+
+  border-radius: 0;
+
+  background: transparent;
+
+  color: #111;
+
+  font-weight: 800;
+
+  box-shadow: none;
+}
+
+body[data-theme="brutal"] .secondary-button:hover:not(:disabled),
+body[data-theme="brutal"] .delete-button:hover:not(:disabled),
+body[data-theme="brutal"] .ai-secondary-button:hover:not(:disabled),
+body[data-theme="brutal"] .modal-cancel-btn:hover:not(:disabled) {
+  background: #111;
+
+  color: #f1eee6;
+
+  transform: none;
+}
+
+/* ---------- brutal stats ---------- */
+
+body[data-theme="brutal"] .job-stats {
+  gap: 0;
+
+  border: 2px solid #111;
+}
+
+body[data-theme="brutal"] .stat-card {
+  min-width: 0;
+
+  border: 0;
+  border-right: 1px solid #111;
+
+  background: rgba(229, 225, 216, 0.85);
+
+  box-shadow: none;
+}
+
+body[data-theme="brutal"] .stat-card:last-child {
+  border-right: 0;
+}
+
+body[data-theme="brutal"] .stat-label {
+  font-family: Arial, Helvetica, sans-serif;
+
+  font-weight: 900;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.08em;
+
+  color: #222;
+}
+
+body[data-theme="brutal"] .stat-value {
+  font-family: Impact, Haettenschweiler, sans-serif;
+
+  font-size: 34px;
+
+  color: #050505;
+}
+
+/* ---------- brutal toggle ---------- */
+
+body[data-theme="brutal"] .view-toggle {
+  gap: 0;
+
+  padding: 0;
+
+  background: transparent;
+
+  border: 1.5px solid #111;
+
+  border-radius: 0;
+}
+
+body[data-theme="brutal"] .view-toggle-button {
+  min-width: 76px;
+
+  border-radius: 0;
+
+  color: #111;
+
+  font-family: Arial, Helvetica, sans-serif;
+
+  font-weight: 800;
+}
+
+body[data-theme="brutal"] .view-toggle-button + .view-toggle-button {
+  border-left: 1.5px solid #111;
+}
+
+body[data-theme="brutal"] .view-toggle-button.active {
+  background: #111;
+
+  color: #eeeae2;
+
+  box-shadow: none;
+}
+
+/* ---------- brutal job card ---------- */
+
+body[data-theme="brutal"] .job-card {
+  position: relative;
+
+  padding: 18px;
+
+  border: 1.5px solid #111;
+
+  background: rgba(235, 231, 222, 0.86);
+
+  border-radius: 0;
+
+  box-shadow: none;
+}
+
+body[data-theme="brutal"] .job-card:hover {
+  transform: translate(-2px, -2px);
+
+  border-color: #111;
+
+  box-shadow: 5px 5px 0 #111;
+}
+
+body[data-theme="brutal"] .job-title {
+  font-family: Arial, Helvetica, sans-serif;
+
+  font-weight: 900;
+
+  letter-spacing: -0.03em;
+
+  color: #080808;
+}
+
+body[data-theme="brutal"] .job-company {
+  font-size: 13px;
+
+  text-transform: uppercase;
+
+  color: #3c3a36;
+}
+
+body[data-theme="brutal"] .job-meta {
+  padding-bottom: 10px;
+
+  border-bottom: 1px solid #111;
+}
+
+body[data-theme="brutal"] .job-meta-item {
+  font-size: 11px;
+
+  color: #4d4a45;
+}
+
+body[data-theme="brutal"] .job-link {
+  color: #111;
+
+  text-transform: uppercase;
+
+  text-decoration: underline;
+}
+
+body[data-theme="brutal"] .job-details-section {
+  border-top: none;
+}
+
+body[data-theme="brutal"] .job-details-label {
+  display: inline-block;
+
+  padding: 2px 5px;
+
+  border: 1px solid #111;
+
+  color: #111;
+
+  font-weight: 900;
+}
+
+body[data-theme="brutal"] .job-details {
+  color: #2d2c29;
+}
+
+body[data-theme="brutal"] .details-toggle-button {
+  color: #111;
+
+  font-family: "Courier New", monospace;
+
+  text-transform: uppercase;
+
+  text-decoration: underline;
+}
+
+/* ---------- brutal status ---------- */
+
+body[data-theme="brutal"] .status-badge {
+  padding: 4px 7px;
+
+  border: 1px solid #111;
+
+  border-radius: 0;
+
+  background: transparent;
+
+  color: #111;
+
+  font-family: "Courier New", monospace;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+}
+
+body[data-theme="brutal"] .status-applied,
+body[data-theme="brutal"] .status-interview,
+body[data-theme="brutal"] .status-rejected {
+  background: transparent;
+
+  color: #111;
+}
+
+/* ---------- brutal actions ---------- */
+
+body[data-theme="brutal"] .job-actions {
+  border-color: #111;
+}
+
+body[data-theme="brutal"] .job-status-select {
+  border-radius: 0;
+
+  font-family: "Courier New", monospace;
+}
+
+/* ---------- brutal board ---------- */
+
+body[data-theme="brutal"] .job-board {
+  gap: 10px;
+}
+
+body[data-theme="brutal"] .job-board-column {
+  min-height: 430px;
+
+  padding: 12px;
+
+  border: 1.5px solid #111;
+
+  border-radius: 0;
+
+  background: rgba(218, 214, 204, 0.76);
+
+  box-shadow: none;
+}
+
+body[data-theme="brutal"] .job-board-column > h3 {
+  padding-bottom: 10px;
+
+  border-bottom: 2px solid #111;
+
+  font-family: Arial, Helvetica, sans-serif;
+
+  font-size: 14px;
+
+  font-weight: 900;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.02em;
+}
+
+body[data-theme="brutal"] .job-board-column > h3::before {
+  content: "▲";
+
+  margin-right: 8px;
+
+  font-size: 9px;
+}
+
+/* ---------- brutal empty state ---------- */
+
+body[data-theme="brutal"] .empty-state {
+  border: 2px dashed #111;
+
+  border-radius: 0;
+
+  background: transparent;
+
+  box-shadow: none;
+
+  color: #111;
+
+  font-family: "Courier New", monospace;
+
+  text-transform: uppercase;
+}
+
+/* =========================================================
+   AUTH / MODALS
+   ========================================================= */
+
+body[data-theme="cute"] .modal,
+body[data-theme="cute"] .auth-form,
+body[data-theme="cute"] .job-form-container {
+  background: linear-gradient(145deg, #fffdfa, #fff5f1);
+
+  border-color: #ecd5d1;
+
+  box-shadow: var(--shadow-modal);
+}
+
+body[data-theme="brutal"] .modal,
+body[data-theme="brutal"] .auth-form,
+body[data-theme="brutal"] .job-form-container {
+  background: #e5e0d6;
+
+  border: 2px solid #111;
+
+  border-radius: 0;
+
+  box-shadow: 9px 9px 0 rgba(0, 0, 0, 0.65);
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 700px) {
+  body[data-theme="cute"] .app-header,
+  body[data-theme="brutal"] .app-header {
+    padding: 20px;
+  }
+
+  body[data-theme="cute"] .app-header::after,
+  body[data-theme="brutal"] .app-header::after {
+    display: none;
+  }
+
+  body[data-theme="brutal"] .job-stats {
+    gap: 0;
+  }
+
+  body[data-theme="brutal"] .stat-card {
+    border-right: 0;
+    border-bottom: 1px solid #111;
+  }
+
+  body[data-theme="brutal"] .stat-card:last-child {
+    border-bottom: 0;
+  }
+}
+
+/* =========================================================
+   CUTE THEME DECORATION
+   ========================================================= */
+
+body[data-theme="cute"] {
+  background-color: #fff8f2;
+
+  background-image: linear-gradient(
+    rgba(205, 154, 160, 0.035) 1px,
+    transparent 1px
+  );
+
+  background-size: 100% 30px;
+}
+
+body[data-theme="cute"]::before {
+  background-image: url("../assets/themes/cute-top.png");
+  opacity: 0.95;
+}
+
+body[data-theme="cute"]::after {
+  background-image: url("../assets/themes/cute-bottom.png");
+  opacity: 0.95;
+}
+
+body[data-theme="cute"] .app-header {
+  position: relative;
+  overflow: visible;
+
+  background: rgba(255, 250, 246, 0.88);
+
+  backdrop-filter: blur(3px);
+
+  border: 1px solid rgba(224, 178, 181, 0.55);
+
+  box-shadow: 0 8px 30px rgba(126, 79, 89, 0.08);
+}
+
+body[data-theme="cute"] .app-header::before {
+  content: "you got this ♡";
+
+  position: absolute;
+  right: 28px;
+  bottom: 14px;
+
+  font-family: "Segoe Print", "Bradley Hand", cursive;
+
+  font-size: 14px;
+
+  color: #d66f82;
+
+  transform: rotate(-5deg);
+}
+
+body[data-theme="cute"] .job-card {
+  position: relative;
+
+  background: linear-gradient(145deg, #fffefa, #fff8f4);
+
+  border-color: #efdcd6;
+
+  box-shadow: 0 8px 22px rgba(126, 79, 89, 0.06);
+}
+
+body[data-theme="cute"] .job-card::before {
+  content: "";
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+
+  width: 4px;
+
+  background: #ef9aaa;
+}
+
+body[data-theme="cute"] .job-card:hover {
+  transform: translateY(-2px);
+
+  box-shadow: 0 15px 34px rgba(132, 78, 92, 0.1);
+}
+
+body[data-theme="cute"] .job-board-column {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 248, 244, 0.94),
+    rgba(255, 252, 248, 0.95)
+  );
+
+  border-color: #efdcd7;
+
+  box-shadow: 0 8px 22px rgba(124, 77, 89, 0.055);
+}
+
+body[data-theme="cute"] .job-board-column > h3 {
+  border-bottom: 1px dashed #e7c8c5;
+}
+
+body[data-theme="cute"] .job-board-column:nth-child(1) > h3::before {
+  content: "✿ ";
+  color: #e98ca1;
+}
+
+body[data-theme="cute"] .job-board-column:nth-child(2) > h3::before {
+  content: "❀ ";
+  color: #90a783;
+}
+
+body[data-theme="cute"] .job-board-column:nth-child(3) > h3::before {
+  content: "✿ ";
+  color: #db7485;
+}
+
+/* =========================================================
+   BRUTAL / DETECTIVE THEME DECORATION
+   ========================================================= */
+
+body[data-theme="brutal"] {
+  background-color: #cbc6bb;
+
+  background-image:
+    radial-gradient(rgba(20, 20, 20, 0.07) 0.6px, transparent 0.7px),
+    linear-gradient(rgba(0, 0, 0, 0.035) 1px, transparent 1px);
+
+  background-size:
+    4px 4px,
+    100% 30px;
+}
+
+body[data-theme="brutal"]::before {
+  height: 280px;
+
+  background-image: url("../assets/themes/brutal-top.png");
+
+  opacity: 0.82;
+}
+
+body[data-theme="brutal"]::after {
+  height: 350px;
+
+  background-image: url("../assets/themes/brutal-bottom.png");
+
+  opacity: 0.85;
+}
+
+body[data-theme="brutal"] .app-header {
+  position: relative;
+
+  padding: 38px 22px 30px;
+
+  background: rgba(224, 220, 210, 0.78);
+
+  border-top: 4px solid #111;
+  border-bottom: 2px solid #111;
+
+  backdrop-filter: blur(1.5px);
+}
+
+body[data-theme="brutal"] .app-header::before {
+  content: "CASE FILE / JOB SEARCH";
+
+  position: absolute;
+  top: 10px;
+  right: 18px;
+
+  padding: 4px 7px;
+
+  border: 1px solid #111;
+
+  font-family: "Courier New", monospace;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  letter-spacing: 0.08em;
+
+  transform: rotate(1.5deg);
+}
+
+body[data-theme="brutal"] .app-header::after {
+  content: "STATUS: ACTIVE";
+
+  position: absolute;
+  right: 20px;
+  bottom: 10px;
+
+  font-family: "Courier New", monospace;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  letter-spacing: 0.12em;
+
+  opacity: 0.68;
+}
+
+body[data-theme="brutal"] .job-card {
+  position: relative;
+
+  background: rgba(232, 228, 218, 0.92);
+
+  border: 1px solid #191919;
+
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.18);
+
+  transform: rotate(-0.15deg);
+}
+
+body[data-theme="brutal"] .job-card:nth-child(even) {
+  transform: rotate(0.15deg);
+}
+
+body[data-theme="brutal"] .job-card:hover {
+  transform: translate(-2px, -2px) rotate(0deg);
+
+  box-shadow: 6px 6px 0 #111;
+}
+
+body[data-theme="brutal"] .status-badge {
+  padding: 4px 8px;
+
+  border: 2px solid currentColor;
+
+  background: transparent;
+
+  font-family: "Courier New", monospace;
+
+  font-size: 11px;
+  font-weight: 900;
+
+  letter-spacing: 0.08em;
+
+  text-transform: uppercase;
+
+  transform: rotate(-2deg);
+}
+
+body[data-theme="brutal"] .status-rejected {
+  color: #8e1d17;
+}
+
+body[data-theme="brutal"] .status-interview {
+  color: #1e2d31;
+}
+
+body[data-theme="brutal"] .status-applied {
+  color: #292929;
+}
+
+body[data-theme="brutal"] .job-board-column {
+  position: relative;
+
+  background: rgba(217, 212, 201, 0.82);
+
+  border: 1px solid #171717;
+
+  box-shadow: inset 0 0 0 4px rgba(255, 255, 255, 0.15);
+}
+
+body[data-theme="brutal"] .job-board-column > h3 {
+  display: flex;
+  align-items: center;
+
+  padding: 8px 6px;
+
+  background: #111;
+
+  color: #eeeae1;
+
+  font-family: "Arial Narrow", Arial, sans-serif;
+
+  font-size: 14px;
+  font-weight: 900;
+
+  letter-spacing: 0.08em;
+
+  text-transform: uppercase;
+}
+
+body[data-theme="brutal"] .job-board-column > h3::before {
+  content: "▲";
+
+  margin-right: 8px;
+
+  font-size: 9px;
+}
+
+/* =========================================================
+   RESPONSIVE DECORATIVE ART
+   ========================================================= */
+
+@media (max-width: 900px) {
+  body::before {
+    height: 190px;
+  }
+
+  body::after {
+    height: 230px;
+  }
+}
+
+@media (max-width: 600px) {
+  body::before {
+    height: 150px;
+  }
+
+  body::after {
+    height: 180px;
+  }
+
+  body[data-theme="cute"] .app-header::before,
+  body[data-theme="brutal"] .app-header::before,
+  body[data-theme="brutal"] .app-header::after {
+    display: none;
+  }
+}

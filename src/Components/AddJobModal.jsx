@@ -1,6 +1,6 @@
 import AddJobForm from "./JobForm";
 
-const AddJobModal = ({ onClose, onAddJob }) => {
+const AddJobModal = ({ onClose, onAddJob, token }) => {
   return (
     <div className="background-modal" onClick={onClose}>
       <div className="modal add-job-modal" onClick={(e) => e.stopPropagation()}>
@@ -14,6 +14,7 @@ const AddJobModal = ({ onClose, onAddJob }) => {
         </button>
 
         <AddJobForm
+          token={token}
           onAddJob={async (newJob) => {
             await onAddJob(newJob);
             onClose();

@@ -266,8 +266,104 @@ body .control-input::placeholder {
 
 /* ---------- cute buttons ---------- */
 
+/* Native selects keep keyboard navigation and form behavior. */
+body .control-select,
+body .job-status-select {
+  color-scheme: light;
+  font: inherit;
+  cursor: pointer;
+  background-color: #fffaf7;
+}
+
+body .control-select:hover:not(:disabled),
+body .job-status-select:hover:not(:disabled) {
+  border-color: var(--color-primary);
+}
+
+body .control-select:focus,
+body .job-status-select:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4px var(--color-focus);
+}
+
+body .control-select:disabled,
+body .job-status-select:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+body .control-select option,
+body .job-status-select option {
+  background: #fffaf7;
+  color: var(--color-text);
+}
+
+/* Enhanced picker where supported; other browsers retain native menus. */
+@supports (appearance: base-select) {
+  body .control-select,
+  body .job-status-select,
+  body .control-select::picker(select),
+  body .job-status-select::picker(select) {
+    appearance: base-select;
+  }
+
+  body .control-select,
+  body .job-status-select {
+    align-items: center;
+    gap: 12px;
+  }
+
+  body .control-select::picker(select),
+  body .job-status-select::picker(select) {
+    margin-block: 6px;
+    padding: 6px;
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-md);
+    background: #fffaf7;
+    box-shadow: 0 12px 32px rgba(123, 76, 88, 0.16);
+    color: var(--color-text);
+  }
+
+  body .control-select::picker-icon,
+  body .job-status-select::picker-icon {
+    color: var(--color-link);
+  }
+
+  body .control-select:open::picker-icon,
+  body .job-status-select:open::picker-icon {
+    rotate: 180deg;
+  }
+
+  body .control-select option,
+  body .job-status-select option {
+    min-height: 40px;
+    padding: 10px 12px;
+    gap: 10px;
+    border-radius: var(--radius-sm);
+    font: inherit;
+    cursor: pointer;
+  }
+
+  body .control-select option:checked,
+  body .job-status-select option:checked {
+    background: #f9e1df;
+    color: #583e48;
+    font-weight: 700;
+  }
+
+  body .control-select option:hover,
+  body .control-select option:focus,
+  body .job-status-select option:hover,
+  body .job-status-select option:focus {
+    background: #fff0eb;
+    outline: 2px solid var(--color-border-strong);
+    outline-offset: -2px;
+  }
+}
+
 body .primary-button,
-body .modal-save-btn {
+body .modal-save-btn,
+body .auth-button {
   border: 1px solid rgba(199, 73, 99, 0.15);
 
   background: linear-gradient(135deg, #f07c89, #e76579);
@@ -278,7 +374,8 @@ body .modal-save-btn {
 }
 
 body .primary-button:hover:not(:disabled),
-body .modal-save-btn:hover:not(:disabled) {
+body .modal-save-btn:hover:not(:disabled),
+body .auth-button:hover:not(:disabled) {
   background: linear-gradient(135deg, #e96d7c, #d9576e);
 }
 
@@ -434,6 +531,92 @@ body .job-board-column:nth-child(3) > h3::before {
 /* =========================================================
    AUTH / MODALS
    ========================================================= */
+
+body .auth-container {
+  min-height: 100vh;
+  min-height: 100svh;
+  height: auto;
+  padding: 32px 16px;
+  box-sizing: border-box;
+}
+
+body .auth-form {
+  position: relative;
+  width: min(100%, 420px);
+  min-width: 0;
+  padding: clamp(24px, 5vw, 40px);
+  box-sizing: border-box;
+  gap: 22px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-xl);
+}
+
+body .auth-title {
+  margin: 0 0 4px;
+  padding-bottom: 18px;
+  border-bottom: 1px dashed var(--color-border-strong);
+  font-family: "Segoe Print", "Bradley Hand", cursive;
+  font-size: clamp(1.7rem, 5vw, 2.1rem);
+  color: #44323b;
+}
+
+body .auth-label {
+  font-weight: 700;
+  color: #684d58;
+}
+
+body .auth-input {
+  width: 100%;
+  min-width: 0;
+  min-height: 48px;
+  padding: 12px 14px;
+  box-sizing: border-box;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.8);
+  font: inherit;
+  color: var(--color-text);
+  transition: border-color 200ms ease, box-shadow 200ms ease;
+}
+
+body .auth-input::placeholder {
+  color: var(--color-text-muted);
+}
+
+body .auth-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4px var(--color-focus);
+}
+
+body .auth-button {
+  min-height: 48px;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+}
+
+body .auth-switch-button {
+  padding: 8px;
+  border-radius: var(--radius-sm);
+  color: var(--color-link-hover);
+  line-height: 1.5;
+  opacity: 1;
+}
+
+body .auth-button:focus-visible,
+body .auth-switch-button:focus-visible {
+  outline: 2px solid var(--color-link-hover);
+  outline-offset: 4px;
+}
+
+body .auth-error {
+  padding: 12px 14px;
+  border: 1px solid var(--color-danger-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-danger-bg);
+  color: var(--color-danger-text);
+  line-height: 1.5;
+}
 
 body .modal,
 body .auth-form,

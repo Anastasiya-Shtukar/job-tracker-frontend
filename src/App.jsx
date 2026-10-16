@@ -405,7 +405,11 @@ function App() {
         )}
 
         {isAddModalOpen && (
-          <AddJobModal onClose={closeAddJobModal} onAddJob={addJob} />
+          <AddJobModal
+            onClose={closeAddJobModal}
+            onAddJob={addJob}
+            token={token}
+          />
         )}
       </div>
     </>
